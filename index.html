@@ -317,13 +317,6 @@ body.emode .eteam:hover{background:rgba(0,51,160,.07);}
       <div class="etog" id="etog" onclick="toggleEdit()">
         <div class="edot"></div><span id="etogLbl">✏️ Editar</span>
       </div>
-      <div class="etog" onclick="exportData()" title="Exportar data.json para subir a GitHub">
-        📤 Publicar datos
-      </div>
-      <label class="etog" title="Importar data.json desde GitHub o backup" style="cursor:pointer">
-        📥 Importar datos
-        <input type="file" accept=".json" onchange="importData(event)" style="display:none">
-      </label>
     </div>
   </div>
   <div class="htabs">
@@ -1705,120 +1698,140 @@ function renderPersonRanking(role) {
     return;
   }
 
-  let html = `<div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:0 2px 12px rgba(0,51,160,.06)">
-    <div style="display:grid;grid-template-columns:40px 1fr 60px 70px 70px 70px 80px;background:var(--navy);padding:10px 16px;gap:0;align-items:center">
+  let html = `<div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+    <div style="display:grid;grid-template-columns:40px 1fr 70px 70px 70px 80px;background:var(--navy);padding:10px 16px;gap:0;align-items:center">
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">#</span>
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6)">${rm.label.toUpperCase()}</span>
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">EQ.</span>
-      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">P.TOTAL</span>
-      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">RES.<br><span style="font-size:8px;opacity:.6">/60</span></span>
-      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">DESEMP.<br><span style="font-size:8px;opacity:.6">/35</span></span>
-      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:var(--yellow);text-align:center">PROM/EQ</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">TOTAL</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">RES.</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:var(--yellow);text-align:center">PROM</span>
     </div>`;
 
   persons.forEach((p,i) => {
     const rank=i+1, ac=avatarColor(p.name);
-    const rowBg = rank===1?'#fffef0':rank===2?'#fafbff':rank===3?'#fdf9f6':'#fff';
     html += `
     <div style="border-top:1px solid var(--border)">
-
-      <!-- ── Fila resumen persona ── -->
-      <div style="display:grid;grid-template-columns:40px 1fr 60px 70px 70px 70px 80px;padding:11px 16px;gap:0;align-items:center;cursor:pointer;background:${rowBg};transition:background .12s"
-        onclick="togglePersonDetail('pd-${role}-${i}')"
-        onmouseenter="this.style.background='#eef2ff'" onmouseleave="this.style.background='${rowBg}'">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--t3);text-align:center">${rank<=3?['🥇','🥈','🥉'][rank-1]:rank}</div>
+      <!-- Fila persona -->
+      <div style="display:grid;grid-template-columns:40px 1fr 70px 70px 70px 80px;padding:11px 16px;gap:0;align-items:center;cursor:pointer;transition:background .12s" onclick="togglePersonDetail('pd-${role}-${i}')" onmouseenter="this.style.background='#f8f9fe'" onmouseleave="this.style.background=''">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--t3);text-align:center">${rank<=3?['🥇','🥈','🥉'][rank-1]:rank}</div>
         <div style="display:flex;align-items:center;gap:9px">
-          <div style="width:34px;height:34px;border-radius:50%;background:${ac};display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#fff;flex-shrink:0">${initials(p.name)}</div>
+          <div style="width:32px;height:32px;border-radius:50%;background:${ac};display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#fff">${initials(p.name)}</div>
           <div>
-            <div style="font-size:13px;font-weight:700;color:var(--t1)">${p.name}</div>
-            <div style="font-size:9px;color:var(--t3)">${p.n} equipo${p.n>1?'s':''} · <span style="color:var(--navy)">▾ ver detalle</span></div>
+            <div style="font-size:13px;font-weight:700">${p.name}</div>
+            <div style="font-size:9px;color:var(--t3)">${p.n} equipo${p.n>1?'s':''} · clic para detalles ▾</div>
           </div>
         </div>
         <div style="text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--navy)">${p.n}</div>
         <div style="text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--navy)">${p.tot.toFixed(1)}</div>
-        <div style="text-align:center">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--navy)">${p.avgRes.toFixed(1)}</div>
-          <div style="font-size:8px;color:var(--t3)">prom/eq</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--purple)">${p.avgDesp.toFixed(1)}</div>
-          <div style="font-size:8px;color:var(--t3)">prom/eq</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy)">${p.avg.toFixed(1)}</div>
-          <div style="height:4px;background:var(--border);border-radius:2px;margin:3px 4px 0">
-            <div style="height:100%;border-radius:2px;background:${ac};width:${Math.min(100,(p.avg/95)*100)}%"></div>
-          </div>
-        </div>
+        <div style="text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--navy)">${p.avgRes.toFixed(1)}</div>
+        <div style="text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy)">${p.avg.toFixed(1)}</div>
       </div>
 
-      <!-- ── Panel de equipos (colapsable) ── -->
-      <div id="pd-${role}-${i}" style="display:none;background:#f4f6fb;border-top:1px solid var(--border);padding:12px 16px">
-        <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">
-          Equipos de ${p.name}
+      <!-- Detalle equipos (expandible) -->
+      <div id="pd-${role}-${i}" style="display:none;background:var(--bg);border-top:1px solid var(--border)">
+        <div style="padding:12px 16px 6px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">
+          Detalle por equipo — ${p.name}
         </div>
-        <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:grid;gap:8px;padding:0 16px 14px">
           ${p.scores.map((sc,si) => {
-            const t   = p.teams[si];
+            const t = p.teams[si];
             const ac2 = avatarColor(t.name);
-            const dp  = sc.dp || calcDesempPts(defaultDesemp(), personMonth);
+            const dp = sc.dp || calcDesempPts(defaultDesemp(), personMonth);
             const maxPts = sc.maxPts ?? 60;
-            const pctRes = Math.min(100,(sc.res/60)*100);
-            const pctDes = Math.min(100,(sc.desemp/(dp.maxDesemp||35))*100);
-            const pctTot = Math.min(100,(sc.total/maxPts)*100);
-            const diff    = sc.total - p.avg;
-            const diffCol = diff>=0?'#007934':Math.abs(diff)<=8?'#ea6608':'#c00';
+            const pctTotal = Math.min(100,(sc.total/maxPts)*100);
+            const pctRes   = Math.min(100,(sc.res/60)*100);
+            const pctDes   = Math.min(100,(sc.desemp/(dp.maxDesemp||35))*100);
+            const diff = sc.total - p.avg;
+            const diffCol = diff>=0?'var(--green)':Math.abs(diff)<=8?'#ea6608':'var(--red)';
             const diffLbl = diff>0?`▲ +${diff.toFixed(1)}`:diff<0?`▼ ${diff.toFixed(1)}`:'= prom';
 
+            // Desglose desempeño
+            const desItems = [
+              {ico:'🛡️', lbl:'PETS',      val: dp.petsExcluido      ? null : dp.pets,      max:5},
+              {ico:'🦺', lbl:'SST',       val: dp.sst,               max:5},
+              {ico:'🔴', lbl:'T.Rojas',   val: dp.tarj,              max:5},
+              {ico:'🌟', lbl:'Cultura',   val: dp.culturaExcluido    ? null : dp.cult,      max:5},
+              {ico:'🧹', lbl:'5S',        val: dp.cincoS,            max:5},
+              {ico:'🏅', lbl:'Experticia',val: dp.experticia,        max:5},
+              {ico:'🎨', lbl:'Creatividad',val:dp.creatividadExcluido? null : dp.creatividad,max:10},
+            ].filter(x => x.val !== null && x.val !== undefined);
+
+            const desHTML = desItems.map(x => {
+              const pct = Math.min(100,(x.val/x.max)*100);
+              const col = pct>=60?'var(--green)':pct>=30?'#ea6608':'var(--red)';
+              return `<div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:10px;width:16px;text-align:center">${x.ico}</span>
+                <span style="font-size:9px;color:var(--t2);width:62px">${x.lbl}</span>
+                <div style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+                  <div style="height:100%;border-radius:3px;background:${col};width:${pct}%"></div>
+                </div>
+                <span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:${col};min-width:32px;text-align:right">${x.val.toFixed(1)}/${x.max}</span>
+              </div>`;
+            }).join('');
+
             return `<div style="background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer" onclick="event.stopPropagation();openDetail(${t.id})">
-              <div style="display:grid;grid-template-columns:1fr 90px 90px 90px;align-items:center;gap:0;padding:10px 14px">
+              <!-- Header equipo -->
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--navy-l);border-bottom:1px solid var(--border)">
+                <div style="width:28px;height:28px;border-radius:50%;background:${ac2};display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">${ini(t.name)}</div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12px;font-weight:700;color:var(--navy)">${t.name}</div>
+                  <div style="font-size:9px;color:var(--t3)">${t.line}</div>
+                </div>
+                <div style="font-size:9px;font-weight:700;color:${diffCol}">${diffLbl} vs prom</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy)">${sc.total.toFixed(1)}<span style="font-size:10px;color:var(--t3)">/${maxPts}</span></div>
+              </div>
 
-                <!-- Nombre y línea -->
-                <div style="display:flex;align-items:center;gap:8px">
-                  <div style="width:28px;height:28px;border-radius:50%;background:${ac2};display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">${ini(t.name)}</div>
+              <div style="padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+                <!-- RESULTADO -->
+                <div>
+                  <div style="font-size:9px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">📊 Resultado <span style="font-weight:400;color:var(--t3)">${sc.res.toFixed(1)}/60 pts</span></div>
+                  <div style="margin-bottom:4px">
+                    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--t2);margin-bottom:2px"><span>⚡ OEE</span><span style="font-weight:700">${(sc.sOee??0).toFixed(1)}/15</span></div>
+                    <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;border-radius:3px;background:#0093d9;width:${Math.min(100,((sc.sOee??0)/15)*100)}%"></div></div>
+                  </div>
+                  <div style="margin-bottom:4px">
+                    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--t2);margin-bottom:2px"><span>📦 Ton.</span><span style="font-weight:700">${(sc.sTon??0).toFixed(1)}/15</span></div>
+                    <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;border-radius:3px;background:#007934;width:${Math.min(100,((sc.sTon??0)/15)*100)}%"></div></div>
+                  </div>
+                  <div style="margin-bottom:4px">
+                    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--t2);margin-bottom:2px"><span>⚖️ PNC</span><span style="font-weight:700">${(sc.sPnc??0).toFixed(1)}/15</span></div>
+                    <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;border-radius:3px;background:#6a1fa0;width:${Math.min(100,((sc.sPnc??0)/15)*100)}%"></div></div>
+                  </div>
                   <div>
-                    <div style="font-size:12px;font-weight:700;color:var(--navy)">${t.name}</div>
-                    <div style="font-size:9px;color:var(--t3)">${t.line}</div>
-                    <span style="font-size:8px;font-weight:700;color:${diffCol}">${diffLbl} vs prom</span>
+                    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--t2);margin-bottom:2px"><span>🧩 Matriz</span><span style="font-weight:700">${(sc.sMatriz??0).toFixed(1)}/15</span></div>
+                    <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;border-radius:3px;background:#410099;width:${Math.min(100,((sc.sMatriz??0)/15)*100)}%"></div></div>
+                  </div>
+                  <!-- Barra total resultado -->
+                  <div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)">
+                    <div style="display:flex;justify-content:space-between;font-size:9px;font-weight:700;color:var(--navy);margin-bottom:2px"><span>TOTAL RESULT.</span><span>${sc.res.toFixed(1)}/60</span></div>
+                    <div style="height:7px;background:var(--border);border-radius:4px;overflow:hidden"><div style="height:100%;border-radius:4px;background:var(--navy);width:${pctRes}%"></div></div>
                   </div>
                 </div>
 
-                <!-- Resultado -->
-                <div style="text-align:center;padding:0 6px">
-                  <div style="font-size:9px;font-weight:700;color:var(--navy);margin-bottom:3px">📊 Resultado</div>
-                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);line-height:1">${sc.res.toFixed(1)}</div>
-                  <div style="font-size:8px;color:var(--t3);margin-bottom:3px">/60 pts</div>
-                  <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
-                    <div style="height:100%;border-radius:3px;background:var(--navy);width:${pctRes}%"></div>
+                <!-- DESEMPEÑO -->
+                <div>
+                  <div style="font-size:9px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">📋 Desempeño <span style="font-weight:400;color:var(--t3)">${sc.desemp.toFixed(1)}/${dp.maxDesemp} pts</span></div>
+                  ${desHTML}
+                  <!-- Barra total desempeño -->
+                  <div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)">
+                    <div style="display:flex;justify-content:space-between;font-size:9px;font-weight:700;color:var(--purple);margin-bottom:2px"><span>TOTAL DESEMP.</span><span>${sc.desemp.toFixed(1)}/${dp.maxDesemp}</span></div>
+                    <div style="height:7px;background:var(--border);border-radius:4px;overflow:hidden"><div style="height:100%;border-radius:4px;background:var(--purple);width:${pctDes}%"></div></div>
                   </div>
                 </div>
 
-                <!-- Desempeño -->
-                <div style="text-align:center;padding:0 6px;border-left:1px solid var(--border)">
-                  <div style="font-size:9px;font-weight:700;color:var(--purple);margin-bottom:3px">📋 Desempeño</div>
-                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--purple);line-height:1">${sc.desemp.toFixed(1)}</div>
-                  <div style="font-size:8px;color:var(--t3);margin-bottom:3px">/${dp.maxDesemp} pts</div>
-                  <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
-                    <div style="height:100%;border-radius:3px;background:var(--purple);width:${pctDes}%"></div>
-                  </div>
-                </div>
+              </div>
 
-                <!-- Total -->
-                <div style="text-align:center;padding:0 6px;border-left:1px solid var(--border)">
-                  <div style="font-size:9px;font-weight:700;color:var(--t2);margin-bottom:3px">🏆 Total</div>
-                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--navy);line-height:1">${sc.total.toFixed(1)}</div>
-                  <div style="font-size:8px;color:var(--t3);margin-bottom:3px">/${maxPts} pts</div>
-                  <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
-                    <div style="height:100%;border-radius:3px;background:linear-gradient(90deg,var(--navy),#4477dd);width:${pctTot}%"></div>
-                  </div>
-                </div>
-
+              <!-- Barra total general -->
+              <div style="padding:8px 14px;background:var(--navy-l);border-top:1px solid var(--border)">
+                <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--navy);margin-bottom:3px"><span>PUNTAJE TOTAL</span><span>${sc.total.toFixed(1)} / ${maxPts} pts</span></div>
+                <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden"><div style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--navy),#0055cc);width:${pctTotal}%"></div></div>
               </div>
             </div>`;
           }).join('')}
         </div>
       </div>
-
     </div>`;
   });
   html += '</div>';
@@ -2296,122 +2309,8 @@ function loadAll(){
 }
 
 // ═══════════════════════════════════════
-// EXPORT / IMPORT / GITHUB SYNC
+// TOAST
 // ═══════════════════════════════════════
-const GITHUB_RAW = 'https://raw.githubusercontent.com/Carvajal77/mundial-somos-super-2026/main/data.json';
-
-function exportData() {
-  const payload = {
-    version: 2,
-    exportedAt: new Date().toISOString(),
-    monthData,
-    metas,
-    activeMonths,
-    teams: BASE_TEAMS.map(t => ({
-      id: t.id, name: t.name, line: t.line,
-      lider: t.lider||'', asistente: t.asistente||'',
-      medico: t.medico||'', mentor: t.mentor||''
-    }))
-  };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'data.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
-  showToast('✅ data.json descargado — súbelo a GitHub para publicar');
-}
-
-function importData(evt) {
-  const file = evt.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      applyPayload(JSON.parse(e.target.result));
-      showToast('✅ Datos importados correctamente');
-    } catch(err) {
-      showToast('❌ Error al importar: archivo inválido');
-    }
-  };
-  reader.readAsText(file);
-  evt.target.value = '';
-}
-
-function applyPayload(data) {
-  if (!data || !data.version) throw new Error('Formato inválido');
-
-  // Equipos
-  if (data.teams) {
-    data.teams.forEach(s => {
-      const t = BASE_TEAMS.find(x => x.id === s.id);
-      if (t) { t.name=s.name; t.line=s.line; t.lider=s.lider||''; t.asistente=s.asistente||''; t.medico=s.medico||''; t.mentor=s.mentor||''; }
-    });
-  }
-
-  // Metas — normalizar claves a número
-  if (data.metas) {
-    metas = {};
-    Object.keys(data.metas).forEach(tk => {
-      const ti = parseInt(tk); if (isNaN(ti)) return;
-      metas[ti] = {};
-      Object.keys(data.metas[tk]).forEach(mk => {
-        const mi = parseInt(mk); if (!isNaN(mi)) metas[ti][mi] = data.metas[tk][mk];
-      });
-    });
-  }
-
-  // monthData — normalizar claves a número
-  if (data.monthData) {
-    monthData = {};
-    Object.keys(data.monthData).forEach(mk => {
-      const mi = parseInt(mk); if (isNaN(mi)) return;
-      monthData[mi] = {};
-      Object.keys(data.monthData[mk]).forEach(tk => {
-        const ti = parseInt(tk);
-        if (!isNaN(ti)) {
-          monthData[mi][ti] = data.monthData[mk][tk];
-          // Asegurar estructura desemp
-          if (!monthData[mi][ti].desemp) monthData[mi][ti].desemp = defaultDesemp();
-        }
-      });
-    });
-  }
-
-  // activeMonths
-  if (data.activeMonths) {
-    activeMonths = data.activeMonths.map(Number).filter(m => m < CUR_M && !!monthData[m]);
-  }
-  if (!activeMonths.length) {
-    activeMonths = Object.keys(monthData).map(Number).filter(m => m < CUR_M).sort((a,b)=>a-b);
-  }
-  if (!activeMonths.length) activeMonths = [LAST_EDITABLE_M];
-
-  saveAll();
-
-  // Ir al mes más reciente con datos
-  let startM = LAST_EDITABLE_M;
-  for (let m = LAST_EDITABLE_M; m >= 0; m--) {
-    if (monthData[m] && Object.keys(monthData[m]).length > 0) { startM = m; break; }
-  }
-  setMonth(startM);
-}
-
-async function loadFromGitHub() {
-  try {
-    // Cache-busting para evitar versión antigua
-    const url = GITHUB_RAW + '?t=' + Date.now();
-    const res = await fetch(url);
-    if (!res.ok) return; // No hay data.json aún — usar localStorage
-    const data = await res.json();
-    applyPayload(data);
-    console.log('✅ Datos cargados desde GitHub');
-  } catch(e) {
-    console.log('ℹ️ Sin datos en GitHub, usando localStorage');
-  }
-}
-
-
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
@@ -2422,19 +2321,7 @@ function showToast(msg){
 // INIT
 // ═══════════════════════════════════════
 try {
-  // Intentar cargar desde GitHub primero, luego localStorage como respaldo
-  loadFromGitHub().catch(() => {
-    loadAll();
-    initDashboard();
-  }).then(() => {
-    initDashboard();
-  });
-} catch(e) {
-  console.error('Error al inicializar:', e);
-  document.body.insertAdjacentHTML('afterbegin',`<div style="background:#c0392b;color:#fff;padding:16px 24px;font-family:sans-serif;font-size:14px;position:fixed;top:0;left:0;right:0;z-index:9999">❌ Error al cargar: <b>${e.message}</b></div>`);
-}
-
-function initDashboard() {
+  loadAll();
   let startMonth = LAST_EDITABLE_M;
   for(let m=LAST_EDITABLE_M;m>=0;m--){ if(monthData[m]&&Object.keys(monthData[m]).length>0){startMonth=m;break;} }
   if(startMonth < 0 || startMonth >= CUR_M) startMonth = LAST_EDITABLE_M;
@@ -2445,6 +2332,9 @@ function initDashboard() {
   activeMonths=activeMonths.filter(m=>m<CUR_M);
   if(!activeMonths.length) activeMonths=[startMonth];
   setMonth(startMonth);
+} catch(e) {
+  console.error('Error al inicializar:', e);
+  document.body.insertAdjacentHTML('afterbegin',`<div style="background:#c0392b;color:#fff;padding:16px 24px;font-family:sans-serif;font-size:14px;position:fixed;top:0;left:0;right:0;z-index:9999">❌ Error al cargar: <b>${e.message}</b></div>`);
 }
 </script>
 </body>

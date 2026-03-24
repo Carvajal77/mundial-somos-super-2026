@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mundial Somos Super 2026 · Tablero de Gestión TPM</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0033a0;--navy-d:#002278;--navy-l:#e8edf8;
+  --yellow:#ffdb00;--yd:#c8a800;
+  --green:#007934;--gl:#e6f4ec;
+  --red:#cc2222;--rl:#fdeaea;
+  --purple:#6030a0;--pl:#f0eafa;
+  --white:#fff;--bg:#f5f6fa;--bg2:#eef0f7;
+  --border:#dde2f0;--t1:#1a2540;--t2:#4b5a7a;--t3:#8a96b4;
+  --plata:#9baab8;--bronce:#d4896a;--r:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;padding-bottom:60px;}
+
+/* HEADER */
+.header{background:var(--navy);position:relative;overflow:hidden;}
+.header::before{content:'26';position:absolute;right:-20px;top:-50px;font-family:'Barlow Condensed',sans-serif;font-size:280px;font-weight:800;color:#fff;opacity:.12;line-height:1;pointer-events:none;}
+.hi{max-width:1320px;margin:0 auto;padding:22px 28px 0;display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;}
+.hlogo{width:42px;height:42px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;margin-bottom:6px;}
+.ht h1{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:800;color:#fff;line-height:1;}
+.ht h1 span{color:var(--yellow);}
+.ht p{font-size:11px;color:#aabbdd;margin-top:2px;font-weight:500;letter-spacing:.4px;text-transform:uppercase;}
+.hmeta{margin-left:auto;margin-bottom:6px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.mbadge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 13px;color:#fff;font-size:11px;font-weight:600;}
+.etog{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 13px;cursor:pointer;font-size:11px;font-weight:600;color:#fff;transition:.18s;user-select:none;}
+.etog:hover{background:rgba(255,255,255,.16);}
+.etog.on{background:var(--yellow);color:var(--navy);border-color:var(--yellow);}
+.edot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7;}
+.etog.on .edot{animation:pulse 1.2s infinite;}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+.htabs{max-width:1320px;margin:0 auto;display:flex;gap:2px;padding:12px 28px 0;overflow-x:auto;}
+.tab{padding:8px 18px;border-radius:9px 9px 0 0;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:.15s;color:rgba(255,255,255,.5);border:none;background:transparent;border-bottom:3px solid transparent;white-space:nowrap;}
+.tab:hover{color:#fff;}
+.tab.active{color:var(--yellow);border-bottom-color:var(--yellow);background:rgba(255,255,255,.06);}
+.stripe{height:5px;background:var(--yellow);}
+.stripe2{height:3px;background:var(--green);}
+
+/* EDIT BANNER */
+.ebanner{background:linear-gradient(90deg,#fffbe0,#fff9cc);border-bottom:2px solid var(--yellow);padding:9px 28px;display:none;align-items:center;gap:8px;font-size:12px;color:#7a6000;font-weight:500;flex-wrap:wrap;}
+.ebanner.show{display:flex;}
+.btn-save{margin-left:auto;background:var(--navy);color:#fff;border:none;border-radius:20px;padding:5px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;}
+.btn-save:hover{background:var(--navy-d);}
+.btn-rst{background:transparent;border:1px solid #c0a800;color:#7a6000;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;}
+.btn-danger{background:transparent;border:1px solid #c04040;color:#c04040;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;}
+
+/* SUMMARY */
+.summary{max-width:1320px;margin:20px auto 0;padding:0 28px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.sc{background:var(--white);border-radius:var(--r);padding:14px 16px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,51,160,.05);position:relative;overflow:hidden;}
+.sc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;}
+.sc.a::after{background:var(--navy);}.sc.b::after{background:var(--yellow);}.sc.c::after{background:var(--green);}
+.sc.d::after{background:var(--bronce);}.sc.e::after{background:var(--purple);}
+.slbl{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;}
+.sval{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;color:var(--navy);line-height:1.1;margin:3px 0 1px;}
+.ssub{font-size:11px;color:var(--t2);}
+
+/* FORMULA BAR */
+.fbar{max-width:1320px;margin:14px auto 0;padding:0 28px;}
+.finner{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:11px 18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--t2);}
+.finner strong{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--navy);}
+.fbadge{background:var(--navy-l);color:var(--navy);border-radius:6px;padding:3px 9px;font-weight:700;font-size:11px;}
+.fbadge.d{background:var(--pl);color:var(--purple);}
+.fop{color:var(--t3);font-size:15px;}
+
+/* MONTH NAV */
+.month-nav{max-width:1320px;margin:16px auto 0;padding:0 28px;}
+.month-nav-inner{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,51,160,.05);}
+.mnav-arrow{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:.13s;flex-shrink:0;}
+.mnav-arrow:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-l);}
+.mnav-arrow:disabled{opacity:.3;cursor:default;pointer-events:none;}
+.mnav-label{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--navy);min-width:150px;text-align:center;}
+.mnav-chips{display:flex;gap:4px;flex-wrap:wrap;}
+.mnav-chip{padding:3px 10px;border-radius:20px;border:1px solid var(--border);background:var(--white);font-size:10px;font-weight:700;color:var(--t3);cursor:pointer;transition:.13s;font-family:'Barlow Condensed',sans-serif;}
+.mnav-chip:hover{border-color:var(--navy);color:var(--navy);}
+.mnav-chip.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.mnav-chip.has-data{border-color:var(--green);color:var(--green);}
+.mnav-chip.has-data.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.mnav-chip.future{opacity:.3;cursor:default;pointer-events:none;}
+.mnav-status{font-size:11px;color:var(--t3);margin-left:auto;display:flex;align-items:center;gap:5px;}
+.mnav-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.mnav-dot.empty{background:var(--t3);}
+
+/* SECTION HEAD */
+.shead{max-width:1320px;margin:20px auto 8px;padding:0 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.shead h2{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:var(--navy);}
+.pill{background:var(--navy-l);color:var(--navy);border-radius:20px;padding:2px 10px;font-size:10px;font-weight:600;}
+.pill.g{background:var(--gl);color:var(--green);}
+.sortwrap{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;}
+.sbtn{padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--white);font-size:10px;font-weight:600;color:var(--t2);cursor:pointer;transition:.12s;}
+.sbtn:hover{border-color:var(--navy);color:var(--navy);}
+.sbtn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* TABLE */
+.twrap{max-width:1320px;margin:0 auto;padding:0 28px;}
+.rtable{width:100%;background:var(--white);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 12px rgba(0,51,160,.06);}
+
+:root{ --col-ind:72px; --col-blk:82px; --col-tot:90px; --col-cat:88px; }
+.rth,.rtr{
+  display:grid;
+  grid-template-columns: 46px 1fr var(--col-ind) var(--col-ind) var(--col-ind) var(--col-blk) var(--col-blk) var(--col-tot) var(--col-cat);
+  padding:0 14px;
+  gap:0;
+}
+.rth{background:var(--navy);padding-top:10px;padding-bottom:10px;align-items:center;}
+.rth span{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.5px;
+  cursor:pointer;user-select:none;line-height:1.35;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:0 2px;
+}
+.rth span:first-child{align-items:center;}
+.rth span:nth-child(2){align-items:flex-start;}
+.rth span:hover{color:#fff;}
+.rth span.sorted{color:var(--yellow);}
+.sub{display:block;font-size:7.5px;opacity:.5;font-weight:500;margin-top:1px;text-transform:none;letter-spacing:0;}
+
+.rtr{border-bottom:1px solid var(--border);align-items:center;min-height:52px;transition:background .12s;}
+.rtr:last-child{border-bottom:none;}
+.rtr:hover{background:#f8f9fe;}
+.rtr.p1{background:#fffef0;}.rtr.p2{background:#fafbff;}.rtr.p3{background:#fdf9f6;}
+.rtr{opacity:0;transform:translateY(4px);}
+.rtr.vis{opacity:1;transform:translateY(0);transition:opacity .22s ease,transform .22s ease;}
+
+.cpos{
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--t3);
+}
+.cpos.r1{color:var(--yd);}.cpos.r2{color:var(--plata);}.cpos.r3{color:var(--bronce);}
+
+.cteam{display:flex;align-items:center;gap:7px;padding-right:8px;}
+.tav{width:26px;height:26px;border-radius:50%;background:var(--navy-l);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:var(--navy);flex-shrink:0;}
+.tname{font-size:12px;font-weight:600;color:var(--t1);line-height:1.3;}
+.tline{font-size:9px;color:var(--t3);}
+.tlider{font-size:9px;color:var(--navy);font-weight:600;line-height:1.3;display:flex;align-items:center;gap:3px;cursor:pointer;}
+.tlider:hover .lm-pencil{opacity:1;}
+.tmentor{font-size:9px;color:var(--purple);font-weight:500;line-height:1.3;display:flex;align-items:center;gap:3px;cursor:pointer;}
+.tmentor:hover .lm-pencil{opacity:1;}
+.lm-pencil{opacity:0;transition:.15s;font-size:9px;color:var(--t3);}
+.lm-placeholder{color:var(--t3);font-style:italic;font-weight:400;}
+.lm-input{border:none;border-bottom:1.5px solid var(--navy);outline:none;font-size:9px;font-family:'Barlow',sans-serif;font-weight:600;color:var(--navy);background:transparent;width:100px;padding:0 1px;}
+.lm-input.mentor{border-bottom-color:var(--purple);color:var(--purple);}
+
+.cscore{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;position:relative;width:100%;padding:4px 0;
+}
+.scv{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.scv.oee-pos{color:var(--green);}.scv.oee-neg{color:var(--red);}.scv.oee-zero{color:var(--t3);}
+.scbar{width:48px;height:3px;background:var(--bg2);border-radius:3px;overflow:hidden;}
+.scfill{height:100%;border-radius:3px;}
+.scmeta{font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:70px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.cblock{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:100%;padding:4px 0;}
+.bval{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;line-height:1;}
+.bval.res{color:var(--navy);}.bval.des{color:var(--purple);}
+.bbar{width:58px;height:4px;background:var(--bg2);border-radius:4px;overflow:hidden;}
+.bfill{height:100%;border-radius:4px;}
+.blbl{font-size:13px;color:var(--t3);text-align:center;}
+
+.ctotal{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;padding:4px 0;}
+.tv{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--navy);line-height:1;}
+.tbar{width:64px;height:5px;background:var(--bg2);border-radius:5px;overflow:hidden;}
+.tbf{height:100%;border-radius:5px;}
+
+.ccat{display:flex;align-items:center;justify-content:center;width:100%;}
+.ccat .cpill{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+.pos-change{font-size:9px;font-weight:700;display:flex;align-items:center;gap:1px;line-height:1;margin-top:1px;}
+.pos-change.up{color:var(--green);}
+.pos-change.down{color:var(--red);}
+.pos-change.same{color:var(--t3);}
+
+.cat-oro{background:#fffbe6;color:#b08800;border:1px solid #ffe066;}
+.cat-plata{background:#f2f4f8;color:#5a6880;border:1px solid #c8d0e0;}
+.cat-bronce{background:#fff3ee;color:#a05030;border:1px solid #f0c0a0;}
+.cat-dev{background:#eef0f8;color:#4060a0;border:1px solid #c0caee;}
+
+/* METAS TAB */
+.metas-grid{max-width:1320px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;}
+.meta-card{background:var(--white);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,51,160,.05);}
+.mch{background:var(--navy);padding:10px 14px;display:flex;align-items:center;gap:8px;}
+.mcav{width:28px;height:28px;background:rgba(255,255,255,.12);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;}
+.mcname{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#fff;}
+.mcline{font-size:10px;color:rgba(255,255,255,.5);}
+.mcbody{padding:12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.meta-row{display:flex;flex-direction:column;gap:3px;}
+.meta-label{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:4px;}
+.meta-input{width:100%;height:30px;border:1.5px solid var(--border);border-radius:7px;padding:0 8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--t1);background:var(--bg);outline:none;transition:.13s;}
+.meta-input:focus{border-color:var(--navy);background:#fff;box-shadow:0 0 0 3px rgba(0,51,160,.1);}
+.meta-hint{font-size:9px;color:var(--t3);}
+.meta-save-btn{margin-top:10px;width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;transition:.13s;}
+.meta-save-btn:hover{background:var(--navy-d);}
+.hist-ind-btn{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;color:var(--t2);transition:.13s;}
+.hist-ind-btn:hover{border-color:var(--navy);color:var(--navy);}
+.hist-ind-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+#hist-table th{background:var(--navy);color:#fff;padding:7px 10px;text-align:center;font-size:10px;font-weight:700;white-space:nowrap;}
+#hist-table th:first-child{text-align:left;}
+#hist-table td{padding:6px 10px;text-align:center;border-bottom:1px solid var(--border);font-size:11px;color:var(--t2);}
+#hist-table td:first-child{text-align:left;font-weight:700;color:var(--navy);background:var(--bg);}
+#hist-table tr:hover td{background:#f0f4ff;}
+#hist-table .pts-cell{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;}
+#hist-table .good{color:var(--green);}
+#hist-table .mid{color:var(--navy);}
+#hist-table .bad{color:var(--red);}
+
+/* DESEMPEÑO TAB */
+.dgrid-wrap{max-width:1320px;margin:0 auto;padding:0 28px;}
+.ileg{background:var(--white);border-radius:var(--r);border:1px solid var(--border);padding:12px 18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.ileg span{font-size:11px;color:var(--t2);}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;}
+.dcard{background:var(--white);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,51,160,.05);}
+.dchead{background:var(--navy);padding:10px 13px;display:flex;align-items:center;gap:9px;}
+.dcav{width:28px;height:28px;background:rgba(255,255,255,.12);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;}
+.dcname{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#fff;}
+.dcline{font-size:10px;color:rgba(255,255,255,.5);}
+.dctotal{margin-left:auto;text-align:right;}
+.dctv{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;line-height:1;color:var(--yellow);}
+.dctl{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.3px;}
+.dcbody{padding:11px 13px;}
+.dirow{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid var(--bg2);}
+.dirow:last-child{border-bottom:none;}
+.dilbl{font-size:11px;font-weight:600;color:var(--t1);}
+.didesc{font-size:9px;color:var(--t3);}
+.dipts{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;min-width:48px;text-align:right;}
+.dipts.pos{color:var(--green);}.dipts.neg{color:var(--red);}.dipts.z{color:var(--t3);}
+.dicontrols{display:flex;align-items:center;gap:3px;}
+.dibtn{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--t2);transition:.12s;line-height:1;flex-shrink:0;}
+.dibtn:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-l);}
+.dibtn.p:hover{border-color:var(--green);color:var(--green);background:var(--gl);}
+.dibtn.n:hover{border-color:var(--red);color:var(--red);background:var(--rl);}
+.divv{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--t1);min-width:22px;text-align:center;}
+
+/* CUMULATIVE TABLE */
+.cum-wrap{overflow-x:auto;}
+.cum-table{width:100%;background:var(--white);border-radius:var(--r);border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,51,160,.06);border-collapse:separate;border-spacing:0;}
+.cum-table th{background:var(--navy);color:rgba(255,255,255,.7);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:10px 11px;text-align:center;white-space:nowrap;cursor:pointer;user-select:none;}
+.cum-table th:nth-child(2){text-align:left;}
+.cum-table th.sorted{color:var(--yellow);}
+.cum-table th:hover{color:#fff;}
+.cum-table td{padding:8px 11px;text-align:center;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle;}
+.cum-table tr:last-child td{border-bottom:none;}
+.cum-table tr:hover td{background:#f8f9fe;}
+.cum-table tr.p1 td{background:#fffef0;}.cum-table tr.p2 td{background:#fafbff;}.cum-table tr.p3 td{background:#fdf9f6;}
+.cum-table td:nth-child(2){text-align:left;}
+.month-cell{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;}
+.month-cell.empty{color:var(--t3);font-style:italic;font-size:11px;}
+.total-cell{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--navy);background:var(--navy-l)!important;}
+.avg-cell{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--t2);}
+
+/* month chips for cumulative */
+.month-selector{max-width:1320px;margin:0 auto 12px;padding:0 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.month-selector label{font-size:12px;font-weight:600;color:var(--t2);}
+.mchip{padding:4px 11px;border-radius:20px;border:1px solid var(--border);background:var(--white);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;transition:.13s;font-family:'Barlow Condensed',sans-serif;}
+.mchip:hover{border-color:var(--navy);color:var(--navy);}
+.mchip.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.mchip.has-data{border-color:var(--green);color:var(--green);}
+.mchip.has-data.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.mchip.future{opacity:.35;cursor:default;pointer-events:none;}
+
+/* CHARTS */
+.chwrap{max-width:1320px;margin:18px auto 0;padding:0 28px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.chcard{background:var(--white);border-radius:var(--r);border:1px solid var(--border);padding:20px;box-shadow:0 2px 8px rgba(0,51,160,.05);}
+.chcard h3{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.3px;margin-bottom:12px;}
+
+/* DETAIL MODAL */
+.doverlay{position:fixed;inset:0;background:rgba(10,20,60,.4);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;}
+.doverlay.open{display:flex;}
+.dpanel{background:var(--white);border-radius:16px;width:640px;max-width:100%;max-height:90vh;overflow-y:auto;padding:24px;position:relative;box-shadow:0 20px 60px rgba(0,30,100,.2);animation:sup .2s cubic-bezier(.4,0,.2,1);}
+@keyframes sup{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.dclose{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;border:none;background:var(--bg);cursor:pointer;font-size:14px;color:var(--t2);display:flex;align-items:center;justify-content:center;}
+.dclose:hover{background:var(--border);}
+
+/* EDIT INLINE */
+body.emode .em{cursor:pointer;border-radius:6px;padding:2px 3px;transition:background .12s;}
+body.emode .em:hover{background:rgba(0,51,160,.07);}
+body.emode .em:hover .scv{color:var(--navy);text-decoration:underline dotted;}
+body.emode .eteam{cursor:pointer;border-radius:6px;padding:2px 4px;transition:background .12s;}
+body.emode .eteam:hover{background:rgba(0,51,160,.07);}
+.ci{width:62px;height:26px;border:2px solid var(--navy);border-radius:6px;padding:0 5px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--navy);text-align:center;background:#fff;outline:none;box-shadow:0 0 0 3px rgba(0,51,160,.12);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;}
+.ni{border:2px solid var(--navy);border-radius:6px;padding:2px 7px;font-size:11px;font-weight:600;font-family:'Barlow',sans-serif;color:var(--navy);background:#fff;outline:none;width:110px;box-shadow:0 0 0 3px rgba(0,51,160,.12);display:block;}
+.ni+.ni{font-size:10px;opacity:.7;margin-top:2px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--navy);color:#fff;padding:8px 20px;border-radius:22px;font-size:12px;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.2);z-index:200;transition:transform .28s cubic-bezier(.4,0,.2,1);pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.footer{max-width:1320px;margin:22px auto 0;padding:0 28px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--t3);}
+
+@media(max-width:1280px){
+  :root{--col-ind:66px;--col-blk:76px;--col-tot:84px;--col-cat:82px;}
+  .rth,.rtr{padding:0 10px;}
+}
+@media(max-width:1080px){
+  :root{--col-ind:60px;--col-blk:70px;--col-tot:78px;--col-cat:76px;}
+  .rth,.rtr{padding:0 8px;}
+}
+@media(max-width:860px){.summary{grid-template-columns:repeat(3,1fr);}.chwrap{grid-template-columns:1fr;}}
+@media(max-width:600px){.summary{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="hi">
+    <div class="hlogo">⚽</div>
+    <div class="ht">
+      <h1>MUNDIAL <span>SOMOS SUPER</span> 2026</h1>
+      <p>Ranking de Posiciones · Tablero de Gestión TPM</p>
+    </div>
+    <div class="hmeta">
+      <span class="mbadge">Mundial Somos Super 2026</span>
+      <div class="etog" id="etog" onclick="toggleEdit()">
+        <div class="edot"></div><span id="etogLbl">✏️ Editar</span>
+      </div>
+    </div>
+  </div>
+  <div class="htabs">
+    <button class="tab active" onclick="showTab('ranking')">🏆 Ranking</button>
+    <button class="tab" onclick="showTab('acumulado')">📈 Acumulado</button>
+    <button class="tab" onclick="showTab('desemp')">📋 Desempeño</button>
+    <button class="tab" onclick="showTab('metas')">🎯 Metas</button>
+    <button class="tab" onclick="showTab('lideres')">👤 Dir. Técnicos</button>
+    <button class="tab" onclick="showTab('mentores')">🎓 Mentores</button>
+    <button class="tab" onclick="showTab('historico')">📜 Consolidado</button>
+    <button class="tab" onclick="showTab('premiacion')">🎖️ Premiación</button>
+  </div>
+</div>
+<div class="stripe"></div><div class="stripe2"></div>
+
+<div class="ebanner" id="ebanner">
+  ✏️&nbsp;<strong>Modo edición</strong>&nbsp;— Clic en valores para editar. Desempeño: usa +/−. Metas: edita en pestaña 🎯. Los cambios se guardan automáticamente.
+  <button class="btn-rst" onclick="resetMonth()">↩ Restablecer mes</button>
+  <button class="btn-danger" onclick="clearAllData()">🗑 Borrar todo</button>
+  <button class="btn-save" onclick="saveExit()">✓ Guardar y salir</button>
+</div>
+
+<div style="max-width:1320px;margin:10px auto 0;padding:0 28px">
+  <div style="background:linear-gradient(90deg,#e8f0ff,#f0f5ff);border:1px solid #b8ccff;border-left:4px solid var(--navy);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px">
+    <span style="font-size:18px">📅</span>
+    <span style="font-size:12px;color:#1a3a7a;line-height:1.5">
+      <strong>Los datos se registran mes vencido.</strong> La información del mes en curso puede estar incompleta o sin actualizar. Para consultar resultados consolidados, selecciona el mes anterior.
+    </span>
+  </div>
+</div>
+
+<div class="summary">
+  <div class="sc a"><div class="slbl">Equipos</div><div class="sval">20</div><div class="ssub">Participantes activos</div></div>
+  <div class="sc b"><div class="slbl">Equipos ORO</div><div class="sval" id="sc-gold">—</div><div class="ssub">≥ 43 pts este mes</div></div>
+  <div class="sc c"><div class="slbl">Promedio del Mes</div><div class="sval" id="sc-avg">—</div><div class="ssub">Sobre 50 pts posibles</div></div>
+  <div class="sc d" style="display:flex;align-items:center;gap:14px">
+    <div style="font-size:38px;line-height:1;flex-shrink:0">🥇</div>
+    <div>
+      <div class="slbl">Líder del Mes</div>
+      <div class="sval" id="sc-best" style="font-size:16px;line-height:1.3">—</div>
+      <div class="ssub" id="sc-bests">—</div>
+    </div>
+  </div>
+  <div class="sc e" style="display:flex;align-items:center;gap:14px">
+    <div style="font-size:38px;line-height:1;flex-shrink:0">🏆</div>
+    <div>
+      <div class="slbl">Líder Acumulado</div>
+      <div class="sval" id="sc-bestc" style="font-size:16px;line-height:1.3">—</div>
+      <div class="ssub" id="sc-bestcs">—</div>
+    </div>
+  </div>
+</div>
+
+<div class="fbar">
+  <div class="finner">
+    <strong>PUNTAJE MENSUAL</strong><span class="fop">=</span>
+    <span class="fbadge">Resultado 60 pts</span>
+    <span style="font-size:10px">(OEE por línea base/meta · Ton+PNC+Matriz vs meta · máx 15/15/15/15)</span>
+    <span class="fop">+</span>
+    <span class="fbadge d">Desempeño 40 pts</span>
+    <span style="font-size:10px">(PETS+SST+T.Rojas+Cultura*+5S+Experticia · máx 5 c/u · 📋 Llamados solo informativo · *Cultura trimestral · 🎨 Creatividad +10 pts desde Abril)</span>
+    <span class="fop">=</span>
+    <strong style="color:var(--green)">máx 100 pts</strong>
+    <span style="font-size:10px;color:var(--t3);margin-left:4px">· Acumulado = suma mensual · Categorías proporcionales al período</span>
+  </div>
+</div>
+
+<!-- ══ TAB RANKING ══ -->
+<div id="tab-ranking">
+  <div class="month-nav">
+    <div class="month-nav-inner">
+      <button class="mnav-arrow" id="mnav-prev" onclick="navMonth(-1)">←</button>
+      <div class="mnav-label" id="mnav-label">—</div>
+      <button class="mnav-arrow" id="mnav-next" onclick="navMonth(1)">→</button>
+      <div class="mnav-chips" id="mnav-chips"></div>
+      <div class="mnav-status"><div class="mnav-dot" id="mnav-dot"></div><span id="mnav-stxt">—</span></div>
+    </div>
+  </div>
+  <div class="shead">
+    <h2>Ranking</h2><span class="pill" id="pill-month">—</span>
+    <div class="sortwrap">
+      <button class="sbtn active" onclick="sortM('total',event)">Total</button>
+      <button class="sbtn" onclick="sortM('res',event)">Resultado</button>
+      <button class="sbtn" onclick="sortM('desemp',event)">Desempeño</button>
+      <button class="sbtn" onclick="sortM('oee',event)">OEE</button>
+      <button class="sbtn" onclick="sortM('ton',event)">Ton</button>
+      <button class="sbtn" onclick="sortM('pnc',event)">PNC</button>
+    </div>
+  </div>
+
+  <div class="twrap">
+    <div class="rtable">
+      <div class="rth">
+        <span>#</span><span>Equipo</span>
+        <span id="hm-oee" onclick="sortM('oee',event)">OEE<span class="sub">/15 pts</span></span>
+        <span id="hm-ton" onclick="sortM('ton',event)">TON<span class="sub">vs meta</span></span>
+        <span id="hm-pnc" onclick="sortM('pnc',event)">PNC<span class="sub">vs meta</span></span>
+        <span id="hm-res" onclick="sortM('res',event)">RESULT.<span class="sub">/60 pts</span></span>
+        <span id="hm-desemp" onclick="sortM('desemp',event)">DESEMP.<span class="sub">/40 pts</span></span>
+        <span id="hm-total" onclick="sortM('total',event)" class="sorted">TOTAL<span class="sub">/100 pts</span></span>
+      </div>
+      <div id="tbody-m"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB PREMIACIÓN ══ -->
+<div id="tab-premiacion" style="display:none">
+  <div style="max-width:1320px;margin:0 auto;padding:16px 28px 0">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:12px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,51,160,.05)">
+      <span style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px">📅 Filtrar meses:</span>
+      <div id="prem-chips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      <button onclick="premSelAll()" style="margin-left:auto;font-size:10px;font-weight:700;color:var(--navy);background:var(--navy-l);border:none;border-radius:6px;padding:4px 10px;cursor:pointer">Todos</button>
+      <button onclick="premSelNone()" style="font-size:10px;font-weight:700;color:var(--t2);background:var(--border);border:none;border-radius:6px;padding:4px 10px;cursor:pointer">Ninguno</button>
+    </div>
+  </div>
+  <div id="premiacion-content" style="max-width:1320px;margin:0 auto;padding:0 28px 40px"></div>
+</div>
+
+<!-- ══ TAB ACUMULADO ══ -->
+<div id="tab-acumulado" style="display:none">
+  <div class="shead"><h2>Acumulado Anual</h2><span class="pill">Suma de meses · categorías proporcionales · máx 95 pts/mes</span>
+    <div class="sortwrap">
+      <button class="sbtn active" onclick="sortC('cumTotal',event)">Total Acum.</button>
+      <button class="sbtn" onclick="sortC('cumAvg',event)">Promedio</button>
+    </div>
+  </div>
+  <div class="month-selector">
+    <label>Meses incluidos:</label>
+    <div id="cum-chips"></div>
+  </div>
+  <div class="twrap"><div class="cum-wrap"><table class="cum-table"><thead id="cum-thead"></thead><tbody id="cum-tbody"></tbody></table></div></div>
+</div>
+
+<!-- ══ TAB DESEMPEÑO ══ -->
+<div id="tab-desemp" style="display:none">
+  <div class="shead"><h2>Indicadores de Desempeño</h2><span class="pill" id="desemp-month-pill">—</span></div>
+  <div id="desemp-lock-banner" style="display:none;max-width:1320px;margin:0 auto 8px;padding:0 28px">
+    <div style="background:linear-gradient(90deg,#fff3e0,#fff8f0);border:1.5px solid #ea6608;border-left:5px solid #ea6608;border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px">
+      <span style="font-size:20px">🔒</span>
+      <span style="font-size:12px;color:#7a3800;font-weight:600">
+        <strong>Mes en curso bloqueado.</strong> La información de este mes estará disponible para ser digitalizada a partir del <strong id="lock-next-month">1° del próximo mes</strong>.
+      </span>
+    </div>
+  </div>
+
+  <div style="max-width:1320px;margin:0 auto;padding:0 28px 10px">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:12px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <button onclick="navDesempMonth(-1)" id="desemp-prev" style="background:none;border:1.5px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--navy)">◀</button>
+      <div id="desemp-chips" style="display:flex;gap:5px;flex-wrap:wrap;flex:1"></div>
+      <button onclick="navDesempMonth(1)" id="desemp-next" style="background:none;border:1.5px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--navy)">▶</button>
+      <div style="font-size:10.5px;color:var(--t3);padding-left:8px;border-left:1px solid var(--border)">
+        💡 Cada mes tiene sus propios valores de desempeño. Cambia de mes para editar períodos anteriores.
+      </div>
+    </div>
+  </div>
+
+  <div class="dgrid-wrap">
+    <div class="ileg">
+      <strong style="font-size:11px;color:var(--navy)">Escala 0–5 pts:</strong>
+      <span>🛡️ <strong>PETS</strong> 0%=0 · 100%=5 pts · No aplica Enero</span>
+      <span>🦺 <strong>SST</strong> 0 accidentes=5 pts · ≥1 accidente=0 pts</span>
+      <span>🔴 <strong>T.Rojas</strong> 0-9=0 · 10-19=1 · 20-29=2 · 30-39=3 · 40-49=4 · ≥50=5</span>
+      <span>🌟 <strong>Cultura</strong> nota 1=0 · 2=1 · 3=2 · 4=4 · 5=5 · Solo Mar·Jun·Sep·Dic</span>
+      <span>🧹 <strong>5S</strong> &lt;70%=0 · lineal 70→90%=5 pts · ≥90%=5</span>
+      <span>🏅 <strong>Modelo Experticia</strong> &lt;80%=0 · 80-84%=1 · 85-89%=2 · 90-94%=3 · 95-99%=4 · 100%=5</span>
+      <span>🎨 <strong>Creatividad</strong> 0–10 pts opcionales · Aplica desde Abril</span>
+      <span>📋 <strong>Llamados al Desempeño</strong> Solo informativo · No suma puntos</span>
+    </div>
+    <div class="dgrid" id="desemp-grid"></div>
+  </div>
+</div>
+
+<!-- ══ TAB METAS ══ -->
+<div id="tab-metas" style="display:none">
+  <div class="shead">
+    <h2>Metas por Equipo</h2>
+    <span class="pill g" id="metas-period-label">—</span>
+  </div>
+  <div id="metas-lock-banner" style="display:none;max-width:1320px;margin:0 auto 8px;padding:0 28px">
+    <div style="background:linear-gradient(90deg,#fff3e0,#fff8f0);border:1.5px solid #ea6608;border-left:5px solid #ea6608;border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px">
+      <span style="font-size:20px">🔒</span>
+      <span style="font-size:12px;color:#7a3800;font-weight:600">
+        <strong>Mes en curso bloqueado.</strong> La información de este mes estará disponible para ser digitalizada a partir del <strong>1° del próximo mes</strong>.
+      </span>
+    </div>
+  </div>
+
+  <div style="max-width:1320px;margin:0 auto 12px;padding:0 28px">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+      <div style="display:flex;align-items:center;gap:0;border-bottom:1px solid var(--border)">
+        <div style="padding:10px 16px;border-right:1px solid var(--border);display:flex;align-items:center;gap:8px;background:#fafbff">
+          <span style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">Vista</span>
+          <button id="mv-mes" class="sbtn active" onclick="setMetasView('mes')" style="padding:3px 10px;font-size:10px">📅 Mensual</button>
+        </div>
+        <div id="mv-mes-sel" style="padding:10px 16px;display:flex;align-items:center;gap:8px;flex:1">
+          <span style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">Mes</span>
+          <div style="display:flex;gap:4px;flex-wrap:wrap" id="metas-month-chips"></div>
+        </div>
+      </div>
+      <div style="padding:10px 16px;background:#f8faff">
+        <div style="font-weight:700;color:var(--navy);font-size:10px;margin-bottom:8px">📊 ¿Cuántos puntos puedo ganar?</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <div style="background:#fff;border-radius:8px;border:1px solid #c8d8f8;overflow:hidden">
+            <div style="background:#0033a0;color:#fff;padding:5px 10px;font-weight:700;font-size:9.5px">⚡ OEE — máx 15 pts</div>
+            <table style="width:100%;border-collapse:collapse;font-size:9px">
+              <tr style="background:#eef3ff"><td style="padding:3px 8px;font-weight:600;color:var(--t2)">% del recorrido logrado</td><td style="padding:3px 8px;font-weight:600;color:var(--t2);text-align:right">Puntos</td></tr>
+              <tr><td style="padding:3px 8px;color:#c00">≤ 0%</td><td style="padding:3px 8px;text-align:right;font-weight:700;color:#c00">0</td></tr>
+              <tr style="background:#f7f9ff"><td style="padding:3px 8px">1% – 9%</td><td style="padding:3px 8px;text-align:right;font-weight:700">1.5</td></tr>
+              <tr><td style="padding:3px 8px">10% – 29%</td><td style="padding:3px 8px;text-align:right;font-weight:700">4.5</td></tr>
+              <tr style="background:#f7f9ff"><td style="padding:3px 8px">30% – 49%</td><td style="padding:3px 8px;text-align:right;font-weight:700">7.5</td></tr>
+              <tr><td style="padding:3px 8px">50% – 69%</td><td style="padding:3px 8px;text-align:right;font-weight:700">10.5</td></tr>
+              <tr style="background:#f7f9ff"><td style="padding:3px 8px">70% – 89%</td><td style="padding:3px 8px;text-align:right;font-weight:700">13.5</td></tr>
+              <tr style="background:#e6f4ea"><td style="padding:3px 8px;font-weight:700;color:#007934">≥ 90% ✓</td><td style="padding:3px 8px;text-align:right;font-weight:800;color:#007934">15</td></tr>
+            </table>
+          </div>
+          <div style="background:#fff;border-radius:8px;border:1px solid #b8e8c8;overflow:hidden">
+            <div style="background:#007934;color:#fff;padding:5px 10px;font-weight:700;font-size:9.5px">📦 Toneladas — máx 15 pts</div>
+            <table style="width:100%;border-collapse:collapse;font-size:9px">
+              <tr style="background:#eef8f2"><td style="padding:3px 8px;font-weight:600;color:var(--t2)">% cumplimiento</td><td style="padding:3px 8px;font-weight:600;color:var(--t2);text-align:right">Puntos</td></tr>
+              <tr><td style="padding:3px 8px;color:#c00">Menor a 70%</td><td style="padding:3px 8px;text-align:right;font-weight:700;color:#c00">0</td></tr>
+              <tr style="background:#f7fcf9"><td style="padding:3px 8px">70% – 79%</td><td style="padding:3px 8px;text-align:right;font-weight:700">3</td></tr>
+              <tr><td style="padding:3px 8px">80% – 89%</td><td style="padding:3px 8px;text-align:right;font-weight:700">6</td></tr>
+              <tr style="background:#f7fcf9"><td style="padding:3px 8px">90% – 94%</td><td style="padding:3px 8px;text-align:right;font-weight:700">9</td></tr>
+              <tr><td style="padding:3px 8px">95% – 99%</td><td style="padding:3px 8px;text-align:right;font-weight:700">12</td></tr>
+              <tr style="background:#e6f4ea"><td style="padding:3px 8px;font-weight:700;color:#007934">≥ 100% ✓</td><td style="padding:3px 8px;text-align:right;font-weight:800;color:#007934">15</td></tr>
+            </table>
+          </div>
+          <div style="background:#fff;border-radius:8px;border:1px solid #d4b8f0;overflow:hidden">
+            <div style="background:#6a1fa0;color:#fff;padding:5px 10px;font-weight:700;font-size:9.5px">⚖️ PNC — máx 15 pts</div>
+            <table style="width:100%;border-collapse:collapse;font-size:9px">
+              <tr style="background:#f3eeff"><td style="padding:3px 8px;font-weight:600;color:var(--t2)">% del recorrido logrado</td><td style="padding:3px 8px;font-weight:600;color:var(--t2);text-align:right">Puntos</td></tr>
+              <tr><td style="padding:3px 8px;color:#c00">≤ 0%</td><td style="padding:3px 8px;text-align:right;font-weight:700;color:#c00">0</td></tr>
+              <tr style="background:#f7f2ff"><td style="padding:3px 8px">1% – 9%</td><td style="padding:3px 8px;text-align:right;font-weight:700">1.5</td></tr>
+              <tr><td style="padding:3px 8px">10% – 29%</td><td style="padding:3px 8px;text-align:right;font-weight:700">4.5</td></tr>
+              <tr style="background:#f7f2ff"><td style="padding:3px 8px">30% – 49%</td><td style="padding:3px 8px;text-align:right;font-weight:700">7.5</td></tr>
+              <tr><td style="padding:3px 8px">50% – 69%</td><td style="padding:3px 8px;text-align:right;font-weight:700">10.5</td></tr>
+              <tr style="background:#f7f2ff"><td style="padding:3px 8px">70% – 89%</td><td style="padding:3px 8px;text-align:right;font-weight:700">13.5</td></tr>
+              <tr style="background:#e6f4ea"><td style="padding:3px 8px;font-weight:700;color:#007934">≥ 90% ✓</td><td style="padding:3px 8px;text-align:right;font-weight:800;color:#007934">15</td></tr>
+            </table>
+          </div>
+          <div style="background:#fff;border-radius:8px;border:1px solid #c8b8f0;overflow:hidden">
+            <div style="background:#410099;color:#fff;padding:5px 10px;font-weight:700;font-size:9.5px">🧩 Matriz Habilidades — máx 15 pts</div>
+            <table style="width:100%;border-collapse:collapse;font-size:9px">
+              <tr style="background:#f0eeff"><td style="padding:3px 8px;font-weight:600;color:var(--t2)">% acumulado del año</td><td style="padding:3px 8px;font-weight:600;color:var(--t2);text-align:right">Puntos</td></tr>
+              <tr><td style="padding:3px 8px;color:#c00">≤ 84%</td><td style="padding:3px 8px;text-align:right;font-weight:700;color:#c00">0</td></tr>
+              <tr style="background:#f7f4ff"><td style="padding:3px 8px">85% – 87%</td><td style="padding:3px 8px;text-align:right;font-weight:700">3</td></tr>
+              <tr><td style="padding:3px 8px">88% – 90%</td><td style="padding:3px 8px;text-align:right;font-weight:700">6</td></tr>
+              <tr style="background:#f7f4ff"><td style="padding:3px 8px">91% – 93%</td><td style="padding:3px 8px;text-align:right;font-weight:700">9</td></tr>
+              <tr><td style="padding:3px 8px">94% – 96%</td><td style="padding:3px 8px;text-align:right;font-weight:700">12</td></tr>
+              <tr style="background:#e6f4ea"><td style="padding:3px 8px;font-weight:700;color:#007934">≥ 97% ✓</td><td style="padding:3px 8px;text-align:right;font-weight:800;color:#007934">15</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="metas-grid" id="metas-grid"></div>
+</div>
+
+<!-- ══ TAB LÍDERES ══ -->
+<div id="tab-lideres" style="display:none">
+  <div class="shead">
+    <h2>👥 Cuerpo Técnico</h2>
+    <span class="pill">Directores · Asistentes · Cuerpo Médico</span>
+    <span class="pill g" id="lider-month-pill">—</span>
+  </div>
+  <div style="max-width:1320px;margin:8px auto 14px;padding:0 28px">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div style="display:flex;border:1.5px solid var(--navy);border-radius:8px;overflow:hidden;flex-shrink:0">
+        <button id="lider-btn-mes" onclick="setTecnicoView('mes')" style="padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;border:none;background:var(--navy);color:#fff;transition:.12s">📅 Por Mes</button>
+        <button id="lider-btn-acum" onclick="setTecnicoView('acumulado')" style="padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;border:none;background:var(--white);color:var(--navy);transition:.12s">🏆 Acumulado</button>
+      </div>
+      <div id="lider-month-chips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    </div>
+  </div>
+  <div class="shead" style="max-width:1320px;margin:0 auto 8px;padding:0 28px"><h2>👤 Directores Técnicos</h2></div>
+  <div id="lideres-content" style="max-width:1320px;margin:0 auto;padding:0 28px 20px"></div>
+  <div style="max-width:1320px;margin:0 auto;padding:0 28px"><div style="border-top:3px solid var(--border);margin:4px 0 14px"></div></div>
+  <div class="shead" style="max-width:1320px;margin:0 auto 8px;padding:0 28px"><h2>🏥 Asistentes Técnicos</h2><span class="pill">Aseguramiento de la Calidad</span></div>
+  <div id="asistentes-content" style="max-width:1320px;margin:0 auto;padding:0 28px 20px"></div>
+  <div style="max-width:1320px;margin:0 auto;padding:0 28px"><div style="border-top:3px solid var(--border);margin:4px 0 14px"></div></div>
+  <div class="shead" style="max-width:1320px;margin:0 auto 8px;padding:0 28px"><h2>🔧 Cuerpo Médico</h2><span class="pill">Mantenimiento</span></div>
+  <div id="medicos-content" style="max-width:1320px;margin:0 auto;padding:0 28px 30px"></div>
+</div>
+
+<!-- ══ TAB MENTORES ══ -->
+<div id="tab-mentores" style="display:none">
+  <div class="shead">
+    <h2>🎓 Mentores</h2>
+    <span class="pill">Resultado por mes seleccionado</span>
+    <span class="pill g" id="mentor-month-pill">—</span>
+  </div>
+  <div style="max-width:1320px;margin:8px auto 10px;padding:0 28px">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div style="display:flex;border:1.5px solid var(--navy);border-radius:8px;overflow:hidden;flex-shrink:0">
+        <button id="mentor-btn-mes" onclick="mentorView='mes';renderPersonRanking('mentor')" style="padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;border:none;background:var(--navy);color:#fff;transition:.12s">📅 Por Mes</button>
+        <button id="mentor-btn-acum" onclick="mentorView='acumulado';renderPersonRanking('mentor')" style="padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;border:none;background:var(--white);color:var(--navy);transition:.12s">🏆 Acumulado</button>
+      </div>
+      <div id="mentor-month-chips" style="display:none;gap:6px;flex-wrap:wrap"></div>
+    </div>
+  </div>
+  <div style="max-width:1320px;margin:0 auto 10px;padding:0 28px">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:11px 18px;font-size:11.5px;color:var(--t2)">
+      🎓 <strong>El ranking agrupa los equipos por mentor asignado</strong> y muestra el puntaje promedio y total de sus equipos.
+    </div>
+  </div>
+  <div id="mentores-content" style="max-width:1320px;margin:0 auto;padding:0 28px 30px"></div>
+</div>
+
+<!-- ══ TAB HISTORICO ══ -->
+<div id="tab-historico" style="display:none">
+  <div class="shead" style="margin-top:18px">
+    <h2>Consolidado por Equipo</h2>
+    <span class="pill" id="hist-team-pill">—</span>
+  </div>
+  <div style="max-width:1320px;margin:0 auto;padding:0 28px 16px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <span style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">Equipo:</span>
+        <div id="hist-team-chips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      </div>
+      <button id="hist-compare-btn" onclick="toggleHistCompare()" style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid var(--navy);background:var(--white);color:var(--navy);font-family:'Barlow',sans-serif;transition:.15s;white-space:nowrap">📊 Ver comparación de todas las líneas</button>
+    </div>
+  </div>
+  <div style="max-width:1320px;margin:0 auto;padding:0 28px 18px">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">Ver:</span>
+      <button class="hist-ind-btn active" onclick="setHistInd('oee')" id="hib-oee">⚡ OEE</button>
+      <button class="hist-ind-btn" onclick="setHistInd('ton')" id="hib-ton">📦 Toneladas</button>
+      <button class="hist-ind-btn" onclick="setHistInd('pnc')" id="hib-pnc">⚖️ PNC</button>
+      <button class="hist-ind-btn" onclick="setHistInd('pets')" id="hib-pets">🛡️ PETS</button>
+      <button class="hist-ind-btn" onclick="setHistInd('sst')" id="hib-sst">🦺 SST</button>
+      <button class="hist-ind-btn" onclick="setHistInd('tarjetas')" id="hib-tarjetas">🔴 T.Rojas</button>
+      <button class="hist-ind-btn" onclick="setHistInd('llamados')" id="hib-llamados">📋 Llamados</button>
+      <button class="hist-ind-btn" onclick="setHistInd('cultura')" id="hib-cultura">🌟 Cultura</button>
+      <button class="hist-ind-btn" onclick="setHistInd('cincoS')" id="hib-cincoS">🧹 5S</button>
+      <button class="hist-ind-btn" onclick="setHistInd('total')" id="hib-total" style="background:var(--navy);color:#fff;border-color:var(--navy)">🏆 Puntaje Total</button>
+    </div>
+  </div>
+  <div style="max-width:1320px;margin:0 auto;padding:0 28px 8px">
+    <div class="chcard" style="padding:18px 20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 id="hist-chart-title" style="margin:0;font-size:14px;font-weight:700;color:var(--navy)">—</h3>
+        <div id="hist-meta-legend" style="font-size:10px;color:var(--t3)"></div>
+      </div>
+      <svg id="hist-svg" style="width:100%;display:block" height="220"></svg>
+    </div>
+  </div>
+  <div style="max-width:1320px;margin:0 auto;padding:0 28px 32px;overflow-x:auto">
+    <table id="hist-table" style="width:100%;border-collapse:collapse;font-size:11px;min-width:600px"></table>
+  </div>
+</div>
+
+<div class="footer">
+  <span>⚽ <strong>Mundial Somos Super 2026</strong> · Tablero de Gestión TPM &nbsp;·&nbsp; <span id="save-ind" style="color:var(--green);font-weight:600;opacity:0;transition:opacity .5s">💾 Guardado</span></span>
+  <span id="footer-hint">Haz clic en un equipo para ver su detalle completo</span>
+</div>
+
+<div class="doverlay" id="doverlay" onclick="closeDetail(event)">
+  <div class="dpanel"><button class="dclose" onclick="closeDetailBtn()">✕</button><div id="dpanel-inner"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// CONSTANTS & CONFIG
+// ═══════════════════════════════════════
+const MONTHS_S = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const MONTHS_F = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const NOW = new Date();
+const CUR_M = NOW.getMonth();
+const LAST_EDITABLE_M = Math.max(0, CUR_M - 1);
+const MAX_PTS = 50;
+
+function getCat(pts, maxPossible=95) {
+  const pct = pts / maxPossible;
+  if (pct >= 0.75) return {l:'ORO',    c:'cat-oro',    e:'🥇'};
+  if (pct >= 0.55) return {l:'PLATA',  c:'cat-plata',  e:'🥈'};
+  if (pct >= 0.35) return {l:'BRONCE', c:'cat-bronce', e:'🥉'};
+  return                  {l:'ASCENSO',c:'cat-dev',    e:'⚡'};
+}
+function getGrad(pts,max=95){
+  const p=pts/max;
+  if(p>=.86)return'linear-gradient(90deg,#c8a800,#ffe033)';
+  if(p>=.70)return'linear-gradient(90deg,#8090aa,#b0c0d8)';
+  if(p>=.50)return'linear-gradient(90deg,#c08060,#e0b090)';
+  return'linear-gradient(90deg,#6080c0,#90a8e0)';
+}
+function ini(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+
+const AVATARCOLORS = ['#0033a0','#007934','#6030a0','#e50695','#ea6608','#0093d9','#871555','#ffdb00'];
+function avatarColor(name) {
+  let h = 0; for(let c of name) h = (h*31+c.charCodeAt(0))&0xffff;
+  return AVATARCOLORS[h % AVATARCOLORS.length];
+}
+function initials(name) {
+  return name.split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
+}
+function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
+function signCls(v){return v>0?'pos':v<0?'neg':'z';}
+
+function scoreColor(pts, maxPts) {
+  if (pts === null || pts === undefined) return '#c00';
+  if (pts <= 0) return '#c0392b';
+  const pct = pts / maxPts;
+  if (pct < 0.2)  return '#e67e22';
+  if (pct < 0.4)  return '#f1c40f';
+  if (pct < 0.6)  return '#2980b9';
+  if (pct < 0.8)  return '#27ae60';
+  return '#007934';
+}
+
+// ═══════════════════════════════════════
+// BASE TEAMS
+// ═══════════════════════════════════════
+const BASE_TEAMS = [
+  {id:1, name:'Mogul A',          line:'Línea Mogul',      lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:2, name:'Barras 1-2',       line:'Línea Barras',     lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:3, name:'Turrones 1',       line:'Línea Turrones',   lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:4, name:'Centros Azúcar',   line:'Línea Centros',    lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:5, name:'Barras Bañadas A', line:'Línea Bañadas',    lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:6, name:'Supercoco 1',      line:'Planta Supercoco', lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:7, name:'Trululu Línea 3',  line:'Planta Trululu',   lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:8, name:'Mogul B',          line:'Línea Mogul',      lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:9, name:'Chao Rellenos',    line:'Línea Chao',       lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:10,name:'Bianchi Naranja',  line:'Línea Bianchi',    lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:11,name:'Barrilete 2',      line:'Línea Barrilete',  lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:12,name:'Turrones 2',       line:'Línea Turrones',   lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:13,name:'Barras Bañadas B', line:'Línea Bañadas',    lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:14,name:'Supercoco 2',      line:'Planta Supercoco', lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:15,name:'Trululu Línea 1',  line:'Planta Trululu',   lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:16,name:'Barras 3-4',       line:'Línea Barras',     lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:17,name:'Chao Duros',       line:'Línea Chao',       lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:18,name:'Bianchi Café',     line:'Línea Bianchi',    lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:19,name:'Barrilete 1',      line:'Línea Barrilete',  lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+  {id:20,name:'Centros Coco',     line:'Línea Centros',    lider:'',asistente:'',medico:'',mentor:'', base2025:{oee:75,ton:90,pnc:3,mpr:80,des:3}},
+];
+
+function defaultMeta(teamIdx) {
+  return { ton: null, pnc: null, mpr: null, des: null, oeeBase: null, oeeMeta: null, pncBase: null, pncMeta: null };
+}
+function defaultDesemp() {
+  return { pets:null, sst:null, tarjetas:null, llamados:null, cultura:null, cincoS:null, creatividad:null, experticia:null };
+}
+
+// ═══════════════════════════════════════
+// SCORING FUNCTIONS
+// ═══════════════════════════════════════
+function scoreTon(pct) {
+  if (pct === null || pct === undefined || pct <= 0) return 0;
+  if (pct >= 100) return 15;
+  if (pct >= 95)  return 12;
+  if (pct >= 90)  return 9;
+  if (pct >= 80)  return 6;
+  if (pct >= 70)  return 3;
+  return 0;
+}
+
+function scorePNC(actual, pncBase, pncMeta) {
+  if (pncBase === null || pncBase === undefined || pncMeta === null || pncMeta === undefined) return null;
+  const rango = pncBase - pncMeta;
+  if (rango <= 0) return null;
+  const pct = ((pncBase - actual) / rango) * 100;
+  if (pct <= 0)  return 0;
+  if (pct >= 90) return 5;
+  if (pct >= 70) return 4.5;
+  if (pct >= 50) return 3.5;
+  if (pct >= 30) return 2.5;
+  if (pct >= 10) return 1.5;
+  return 0.5;
+}
+
+function scoreOEE(actual, oeeBase, oeeMeta) {
+  if (oeeBase === null || oeeBase === undefined || oeeMeta === null || oeeMeta === undefined) return null;
+  const rango = oeeMeta - oeeBase;
+  // Si meta <= base, revisar igual si el actual supera la meta
+  if (rango <= 0) {
+    // Si el actual es mayor o igual a la meta (que ya supera la base), dar puntaje completo
+    if (actual >= oeeMeta) return 15;
+    return 0;
+  }
+  const pct = ((actual - oeeBase) / rango) * 100;
+  if (pct <= 0)  return 0;
+  if (pct >= 90) return 15;
+  if (pct >= 70) return 13.5;
+  if (pct >= 50) return 10.5;
+  if (pct >= 30) return 7.5;
+  if (pct >= 10) return 4.5;
+  return 1.5;
+}
+
+function scoreMatriz(pct) {
+  if (pct <= 84) return 0;
+  if (pct <= 87) return 3;
+  if (pct <= 90) return 6;
+  if (pct <= 93) return 9;
+  if (pct <= 96) return 12;
+  return 15;
+}
+
+function scoreExperticia(pct) {
+  if (pct === null || pct === undefined) return 0;
+  if (pct < 80)  return 0;
+  if (pct < 85)  return 1;
+  if (pct < 90)  return 2;
+  if (pct < 95)  return 3;
+  if (pct < 100) return 4;
+  return 5;
+}
+
+function calcDesempPts(d, mIdx) {
+  const petsExcluido      = (mIdx === 0);
+  const culturaExcluido   = ![2, 5, 8, 11].includes(mIdx);
+  const creatividadExcluido = (mIdx < 3);
+
+  const pets   = petsExcluido    ? 0 : (d.pets    != null ? clamp((d.pets / 100) * 5, 0, 5) : 0);
+  const sst    = d.sst           != null ? (d.sst === 0 ? 5 : 0) : 0;
+  const tv     = d.tarjetas      != null ? d.tarjetas : null;
+  const tarj   = tv != null ? (tv < 10 ? 0 : tv < 20 ? 1 : tv < 30 ? 2 : tv < 40 ? 3 : tv < 50 ? 4 : 5) : 0;
+  const llam   = 0;
+  const cultMap = {1:0,2:1,3:2,4:4,5:5};
+  const cult   = culturaExcluido ? 0 : (d.cultura != null ? (cultMap[d.cultura] ?? 0) : 0);
+  const cincoS = d.cincoS        != null ? parseFloat((d.cincoS < 70 ? 0 : clamp((d.cincoS-70)/20*5, 0, 5)).toFixed(2)) : 0;
+  const creat  = creatividadExcluido ? 0 : (d.creatividad != null ? clamp(d.creatividad, 0, 10) : 0);
+  const exper  = d.experticia != null ? scoreExperticia(d.experticia) : 0;
+
+  const maxDesemp = 35 - (petsExcluido ? 5 : 0) - (culturaExcluido ? 5 : 0) + (creatividadExcluido ? 0 : 10);
+
+  return {
+    pets:              petsExcluido        ? null : parseFloat(pets.toFixed(2)),
+    petsExcluido,
+    cult:              culturaExcluido     ? null : parseFloat(cult.toFixed(2)),
+    culturaExcluido,
+    creatividad:       creatividadExcluido ? null : parseFloat(creat.toFixed(2)),
+    creatividadExcluido,
+    experticia:        parseFloat(exper.toFixed(2)),
+    sst:               parseFloat(sst.toFixed(2)),
+    tarj:              parseFloat(tarj.toFixed(2)),
+    llam:              parseFloat(llam.toFixed(2)),
+    cincoS:            parseFloat(cincoS.toFixed(2)),
+    maxDesemp,
+    total: parseFloat((pets+sst+tarj+llam+cult+cincoS+creat+exper).toFixed(2))
+  };
+}
+
+// ═══════════════════════════════════════
+// DATA STRUCTURES
+// ═══════════════════════════════════════
+let monthData = {};
+let metas = {};
+let activeMonths = [];
+let curMonth = CUR_M;
+let liderMonth = Math.max(0, CUR_M - 1);
+let mentorMonth = Math.max(0, CUR_M - 1);
+let liderView = "mes";
+let asistenteView = "mes";
+let medicoView = "mes";
+let mentorView = "mes";
+let asistenteMonth = Math.max(0, CUR_M - 1);
+let medicoMonth = Math.max(0, CUR_M - 1);
+let metasMonth = CUR_M;
+let sortFieldM = 'total', sortAscM = false;
+let sortFieldC = 'cumTotal', sortAscC = false;
+let editMode = false;
+
+function qStart(mIdx) { return Math.floor(mIdx / 3) * 3; }
+
+function getMetaForMonth(teamId, mIdx) {
+  const fallback = defaultMeta(BASE_TEAMS.findIndex(t=>t.id===teamId));
+
+  // Normalizar metas[teamId] a claves numéricas
+  const tmRaw = metas[teamId] || metas[String(teamId)];
+  if (!tmRaw) return fallback;
+
+  // Construir mapa limpio con claves numéricas
+  const tm = {};
+  Object.keys(tmRaw).forEach(k => {
+    const ki = parseInt(k);
+    if (!isNaN(ki)) tm[ki] = tmRaw[k];
+  });
+
+  // Buscar meta: desde mIdx hacia atrás (sin límite de trimestre)
+  let base = null;
+  for (let m = mIdx; m >= 0; m--) {
+    if (tm[m]) { base = tm[m]; break; }
+  }
+  if (!base) return fallback;
+
+  // Para cada campo clave buscar el primer valor no-null en cualquier mes
+  const allKeys = Object.keys(tm).map(Number).sort((a,b)=>b-a);
+  const findVal = (key) => {
+    if (base[key] !== null && base[key] !== undefined) return base[key];
+    for (const m of allKeys) {
+      const obj = tm[m];
+      if (obj && obj[key] !== null && obj[key] !== undefined) return obj[key];
+    }
+    return fallback[key];
+  };
+
+  return {
+    ...fallback, ...base,
+    oeeBase: findVal('oeeBase'),
+    oeeMeta: findVal('oeeMeta'),
+    pncBase: findVal('pncBase'),
+    pncMeta: findVal('pncMeta'),
+  };
+}
+
+function setMetaForMonth(teamId, mIdx, metaObj) {
+  if (!metas[teamId]) metas[teamId] = {};
+  metas[teamId][mIdx] = metaObj;
+}
+
+function genResultData(teamIdx, mIdx) {
+  return { ton: null, pnc: null, mpr: null, des: null, oee: null, inocuidad: null, desemp: defaultDesemp() };
+}
+
+function initMonth(mIdx) {
+  if (!monthData[mIdx]) monthData[mIdx] = {};
+}
+
+function initMetas() {
+  BASE_TEAMS.forEach((t,idx) => { if (!metas[t.id]) metas[t.id] = {}; });
+}
+
+// ═══════════════════════════════════════
+// SCORING PIPELINE
+// ═══════════════════════════════════════
+function getTeamMonthScore(teamId, mIdx) {
+  if (mIdx >= CUR_M) return null;
+  const d = monthData[mIdx] && monthData[mIdx][teamId];
+  if (!d) return null;
+  const meta = getMetaForMonth(teamId, mIdx);
+  const sTon = scoreTon(d.ton);
+  const findMetaVal = (key) => {
+    if (meta[key] !== null && meta[key] !== undefined) return meta[key];
+    const tm = metas[teamId] || metas[String(teamId)];
+    if (!tm) return null;
+    const sorted = Object.keys(tm).map(Number).filter(n=>!isNaN(n)).sort((a,b)=>b-a);
+    for (const m of sorted) {
+      if (tm[m] && tm[m][key] !== null && tm[m][key] !== undefined) return tm[m][key];
+    }
+    return null;
+  };
+  const pncBase = findMetaVal('pncBase'), pncMeta = findMetaVal('pncMeta');
+  const oeeBase = findMetaVal('oeeBase'), oeeMeta = findMetaVal('oeeMeta');
+  const sPnc    = scorePNC(d.pnc, pncBase, pncMeta);
+  const sOee    = scoreOEE(d.oee, oeeBase, oeeMeta);
+  const oeeError = sOee === null, pncError = sPnc === null;
+  const sMatriz    = d.matriz != null ? scoreMatriz(d.matriz) : (d.desemp && d.desemp.matriz != null ? scoreMatriz(d.desemp.matriz) : 0);
+  const inocDesc   = d.inocuidad != null ? d.inocuidad * 15 : 0;
+  const res        = parseFloat(((sTon)+(sPnc??0)+(sOee??0)+sMatriz-inocDesc).toFixed(2));
+  const dp      = calcDesempPts(d.desemp, mIdx);
+  const desemp  = dp.total;
+  const maxPts  = 60 + dp.maxDesemp;
+  const total   = parseFloat((res+desemp).toFixed(2));
+  return { ...d, meta, sTon, sPnc, sOee, sMatriz, inocDesc, oeeError, pncError, res, dp, desemp, maxPts, total };
+}
+
+function safeScore(teamId, mIdx) {
+  const s = getTeamMonthScore(teamId, mIdx);
+  if (s) return s;
+  const dp = calcDesempPts(defaultDesemp(), mIdx);
+  return {
+    total:0, res:0, desemp:0, dp, sTon:0, sPnc:0, sOee:0, inocDesc:0, sMatriz:0,
+    oeeError:false, pncError:false, maxPts: 60 + dp.maxDesemp,
+    ton:null, pnc:null, oee:null, meta: getMetaForMonth(teamId, mIdx)
+  };
+}
+
+function getTeamCumulative(teamId) {
+  let cumTotal = 0, count = 0;
+  const monthly = {};
+  activeMonths.filter(m => m < CUR_M).forEach(m => {
+    const s = getTeamMonthScore(teamId, m);
+    if (s && s.total > 0) { cumTotal += s.total; count++; monthly[m] = parseFloat(s.total.toFixed(2)); }
+    else if (monthData[m] && monthData[m][teamId]) { monthly[m] = 0; }
+  });
+  return { cumTotal: parseFloat(cumTotal.toFixed(2)), cumAvg: count ? parseFloat((cumTotal/count).toFixed(2)) : 0, monthly, count };
+}
+
+// ═══════════════════════════════════════
+// MONTH NAV
+// ═══════════════════════════════════════
+function renderMonthNav() {
+  const label = document.getElementById('mnav-label');
+  const prev  = document.getElementById('mnav-prev');
+  const next  = document.getElementById('mnav-next');
+  const chips = document.getElementById('mnav-chips');
+  const dot   = document.getElementById('mnav-dot');
+  const stxt  = document.getElementById('mnav-stxt');
+  const pill  = document.getElementById('pill-month');
+  const dpill = document.getElementById('desemp-month-pill');
+  const lbl = MONTHS_F[curMonth]+' '+NOW.getFullYear();
+  if(label) label.textContent = lbl;
+  if(pill)  pill.textContent  = lbl;
+  if(dpill) dpill.textContent = lbl;
+  if(prev)  prev.disabled  = curMonth === 0;
+  if(next)  next.disabled  = curMonth === 11;
+  if(chips) {
+    chips.innerHTML = '';
+    for(let m=0;m<=11;m++){
+      const future = m > CUR_M, hasD = !!monthData[m], active = m === curMonth;
+      const ch = document.createElement('button');
+      ch.className = `mnav-chip${hasD?' has-data':''}${active?' active':''}${future?' future':''}`;
+      ch.textContent = MONTHS_S[m];
+      if(!future) ch.onclick = ()=>setMonth(m);
+      chips.appendChild(ch);
+    }
+  }
+  const hasD = !!monthData[curMonth];
+  if(dot)  dot.className  = 'mnav-dot'+(hasD?'':' empty');
+  if(stxt) stxt.textContent = hasD ? 'Con datos' : 'Sin datos — activa edición para agregar';
+}
+
+function setMonth(m) {
+  initMonth(m);
+  curMonth = m;
+  desempMonth = Math.min(m, LAST_EDITABLE_M);
+  renderMonthNav();
+  renderMonthly();
+  if(document.getElementById('tab-desemp').style.display!=='none') renderDesemp();
+}
+function navMonth(d) { const t = curMonth+d; if(t<0||t>11) return; setMonth(t); }
+
+// ═══════════════════════════════════════
+// RENDER MONTHLY
+// ═══════════════════════════════════════
+function renderMonthly() {
+  renderMonthNav();
+  const body = document.getElementById('tbody-m');
+  if (!body) return;
+  body.innerHTML = '';
+
+  const rows = BASE_TEAMS.map(t => { const s = safeScore(t.id, curMonth); return { t, ...s }; });
+  rows.sort((a,b)=>{
+    let va=a[sortFieldM]??0, vb=b[sortFieldM]??0;
+    if(sortFieldM==='pnc'||sortFieldM==='des'){va=-va;vb=-vb;}
+    const diff = sortAscM ? va-vb : vb-va;
+    if(diff === 0 && sortFieldM === 'total') return (b.res??0) - (a.res??0);
+    return diff;
+  });
+
+  let prevRankMap = {};
+  const prevMonth = (() => { for(let pm = curMonth-1; pm >= 0; pm--) { if(monthData[pm]) return pm; } return null; })();
+  if(prevMonth !== null) {
+    const prevRows = BASE_TEAMS.map(t => { const s = getTeamMonthScore(t.id, prevMonth); return { t, total: s?.total ?? 0 }; }).sort((a,b) => b.total - a.total);
+    prevRows.forEach((r,i) => { prevRankMap[r.t.id] = i+1; });
+  }
+
+  rows.forEach((row,idx)=>{
+    const rank = idx+1;
+    const cat  = getCat(row.total, row.maxPts ?? 95);
+    const pc   = rank===1?'p1':rank===2?'p2':rank===3?'p3':'';
+    const cc   = rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
+
+    let posChangeHTML = '';
+    if(prevMonth !== null && prevRankMap[row.t.id]) {
+      const prev = prevRankMap[row.t.id], diff = prev - rank;
+      if(diff > 0)       posChangeHTML = `<div class="pos-change up">▲${diff}</div>`;
+      else if(diff < 0)  posChangeHTML = `<div class="pos-change down">▼${Math.abs(diff)}</div>`;
+      else               posChangeHTML = `<div class="pos-change same">—</div>`;
+    }
+
+    const posH = rank<=3
+      ? `<span style="font-size:17px">${rank===1?'🥇':rank===2?'🥈':'🥉'}</span>`
+      : `<span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--t3)">${rank}</span>`;
+
+    const teamAttrs = `class="cteam" style="cursor:pointer" onclick="openDetail(${row.t.id})"`;
+
+
+    const liderTxt  = row.t.lider  || '';
+    const mentorTxt = row.t.mentor || '';
+    const asistHTML  = `<div class="tlider" id="asistente-label-${row.t.id}" onclick="startInlineEdit(event,${row.t.id},'asistente')">🏥 <span>${row.t.asistente||'<em style="opacity:.5">Asistente</em>'}</span></div>`;
+    const medicoHTML = `<div class="tlider" id="medico-label-${row.t.id}" onclick="startInlineEdit(event,${row.t.id},'medico')">🔧 <span>${row.t.medico||'<em style="opacity:.5">Cuerpo Médico</em>'}</span></div>`;
+    const liderHTML  = `<div class="tlider" id="lider-label-${row.t.id}" onclick="startInlineEdit(event,${row.t.id},'lider')"><span style="font-size:9px">👤</span><span id="lider-txt-${row.t.id}" class="${liderTxt?'':'lm-placeholder'}">${liderTxt||'Dir. Técnico'}</span><span class="lm-pencil">✏️</span></div>`;
+    const mentorHTML = `<div class="tmentor" id="mentor-label-${row.t.id}" onclick="startInlineEdit(event,${row.t.id},'mentor')"><span style="font-size:9px">🎓</span><span id="mentor-txt-${row.t.id}" class="${mentorTxt?'':'lm-placeholder'}">${mentorTxt||'Mentor'}</span><span class="lm-pencil">✏️</span></div>`;
+
+    const tr = document.createElement('div');
+    tr.className = `rtr ${pc}`;
+    tr.innerHTML = `
+      <div class="cpos ${cc}" style="flex-direction:column;gap:0">${posH}${posChangeHTML}</div>
+      <div ${teamAttrs}>
+        <div class="tav">${ini(row.t.name)}</div>
+        <div style="min-width:0">
+          <div class="tname" onclick="startEditTeamField(event,${row.t.id},'name')" title="Clic para editar nombre" style="cursor:text;border-radius:4px;padding:1px 3px;transition:background .12s" onmouseenter="this.style.background='rgba(0,51,160,.07)'" onmouseleave="this.style.background=''">${row.t.name}</div>
+          <div class="tline" onclick="startEditTeamField(event,${row.t.id},'line')" title="Clic para editar línea" style="cursor:text;border-radius:4px;padding:1px 3px;transition:background .12s" onmouseenter="this.style.background='rgba(0,51,160,.07)'" onmouseleave="this.style.background=''">${row.t.line}</div>
+          ${liderHTML}${asistHTML}${medicoHTML}${mentorHTML}
+        </div>
+      </div>
+      <div class="cscore" ${editMode?`onclick="startEditOEE(event,${row.t.id})"`:`onclick="openDetail(${row.t.id})"`}>
+        ${row.oeeError
+          ? `<div style="font-size:10px;font-weight:700;color:#c00">⚠️ Sin base/meta</div><div style="font-size:8px;color:#c00">Configura en Metas</div>`
+          : `<div class="scv" style="color:${scoreColor(row.sOee??0,15)}">${(row.sOee??0)>0?'+':''}${(row.sOee??0).toFixed(1)}<span style="font-size:13px;color:var(--t3)">/15</span></div><div style="font-size:9px;font-weight:600;color:var(--t2)">${row.oee??'—'}%</div>`
+        }
+      </div>
+      ${scoreCell(row.sTon,row.ton+'%','% cumplimiento','',row.t.id,'ton',15)}
+      ${row.pncError
+        ? `<div class="cblock" style="text-align:center"><div style="font-size:10px;font-weight:700;color:#c00">⚠️ Sin base/meta</div></div>`
+        : scoreCell(row.sPnc,row.pnc+'%',`Base:${row.meta.pncBase}%→Meta:${row.meta.pncMeta}%`,'y',row.t.id,'pnc',15)
+      }
+      <div class="cblock">
+        <div class="bval res">${row.res.toFixed(1)}</div>
+        <div class="bbar"><div class="bfill" style="width:${Math.max(0,(row.res/60)*100)}%;background:var(--navy)"></div></div>
+        <div class="blbl">/60 pts${row.inocDesc>0?` <span style="color:#dc2626;font-size:9px">−${row.inocDesc} inoc.</span>`:''}</div>
+      </div>
+      <div class="cblock">
+        <div class="bval des">${row.desemp.toFixed(1)}</div>
+        <div class="bbar"><div class="bfill" style="width:${(row.desemp/(row.dp?.maxDesemp??40))*100}%;background:var(--purple)"></div></div>
+        <div class="blbl">/${row.dp?.maxDesemp??40} pts</div>
+      </div>
+      <div class="ctotal">
+        <div class="tv">${row.total.toFixed(1)}</div>
+        <div class="tbar"><div class="tbf" style="width:${(row.total/(row.maxPts??60))*100}%;background:${getGrad(row.total,row.maxPts??60)}"></div></div>
+      </div>
+    `;
+    body.appendChild(tr);
+    setTimeout(()=>tr.classList.add('vis'), 12+idx*11);
+  });
+
+  updateSummary(rows);
+}
+
+function scoreCell(pts, actualLabel, metaLabel, color, teamId, field, maxPts=5) {
+  const col = scoreColor(pts, maxPts);
+  const editAttr = editMode ? `class="cscore em" onclick="startEditMetric(event,${teamId},'${field}')"` : `class="cscore"`;
+  const display = pts <= 0 ? pts.toFixed(1) : `+${pts.toFixed(1)}`;
+  return `<div ${editAttr}>
+    <div class="scv" style="color:${col}">${display}<span style="font-size:11px;color:var(--t3)">/${maxPts}</span></div>
+    <div class="scmeta">${actualLabel}</div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+// SUMMARY
+// ═══════════════════════════════════════
+function updateSummary(rows) {
+  const maxPtsMes = rows[0]?.maxPts ?? 60;
+  const gold = rows.filter(r=>r.total>=(maxPtsMes*0.75)).length;
+  const avg  = rows.length ? (rows.reduce((s,r)=>s+r.total,0)/rows.length).toFixed(1) : '—';
+  const best = [...rows].sort((a,b)=>b.total-a.total)[0];
+  document.getElementById('sc-gold').textContent = gold;
+  document.getElementById('sc-avg').textContent  = avg;
+  document.getElementById('sc-best').textContent = best?best.t.name:'—';
+  document.getElementById('sc-bests').textContent= best?`${best.total.toFixed(1)} pts · ${getCat(best.total, best.maxPts??60).l}`:'—';
+  const cumRows = BASE_TEAMS.map(t=>({t,...getTeamCumulative(t.id)})).sort((a,b)=>b.cumTotal-a.cumTotal);
+  const cb = cumRows[0];
+  document.getElementById('sc-bestc').textContent  = cb?cb.t.name:'—';
+  document.getElementById('sc-bestcs').textContent = cb?`${cb.cumTotal} pts acum.`:'—';
+}
+
+// ═══════════════════════════════════════
+// RENDER CUMULATIVE
+// ═══════════════════════════════════════
+function renderCumulative() {
+  const cc = document.getElementById('cum-chips');
+  cc.innerHTML = '';
+  for(let m=0;m<=11;m++){
+    const hasD=!!monthData[m], isAct=activeMonths.includes(m), fut=m>CUR_M;
+    const ch=document.createElement('button');
+    ch.className=`mchip${hasD?' has-data':''}${isAct?' active':''}${fut?' future':''}`;
+    ch.textContent=MONTHS_S[m];
+    if(!fut) ch.onclick=()=>toggleMonth(m);
+    cc.appendChild(ch);
+  }
+  if(!activeMonths.length){
+    document.getElementById('cum-thead').innerHTML='';
+    document.getElementById('cum-tbody').innerHTML=`<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--t3);font-style:italic">Selecciona al menos un mes</td></tr>`;
+    return;
+  }
+  const cumRows = BASE_TEAMS.map(t=>{ const c=getTeamCumulative(t.id); return {t,...c}; });
+  cumRows.sort((a,b)=>sortAscC?a[sortFieldC]-b[sortFieldC]:b[sortFieldC]-a[sortFieldC]);
+  const mesesCerrados = activeMonths.filter(m => m < CUR_M);
+  const maxPossible = mesesCerrados.length * 95;
+  document.getElementById('cum-thead').innerHTML=`<tr>
+    <th style="width:42px">#</th>
+    <th style="text-align:left;min-width:130px">Equipo</th>
+    ${mesesCerrados.map(m=>`<th>${MONTHS_S[m]}</th>`).join('')}
+    <th class="${sortFieldC==='cumTotal'?'sorted':''}" onclick="sortC('cumTotal',event)" style="background:#001e70">TOTAL</th>
+    <th class="${sortFieldC==='cumAvg'?'sorted':''}" onclick="sortC('cumAvg',event)">PROM.</th>
+  </tr>`;
+  const tbody=document.getElementById('cum-tbody');
+  tbody.innerHTML='';
+  cumRows.forEach((row,idx)=>{
+    const rank=idx+1, pc=rank===1?'p1':rank===2?'p2':rank===3?'p3':'';
+    const posH=rank<=3?`${rank===1?'🥇':rank===2?'🥈':'🥉'}`:rank;
+    const mCells=mesesCerrados.map(m=>{
+      const v=row.monthly[m];
+      const col=v>=46?'#b08800':v>=38?'var(--navy)':v>=27?'#a05030':'var(--t3)';
+      return v!==undefined?`<td class="month-cell" style="color:${col}">${v}</td>`:`<td class="month-cell empty">—</td>`;
+    }).join('');
+    const tr=document.createElement('tr');
+    tr.className=pc; tr.style.cursor='pointer';
+    tr.onclick=()=>openDetail(row.t.id,true);
+    tr.innerHTML=`
+      <td><strong style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--t3)">${posH}</strong></td>
+      <td><div style="display:flex;align-items:center;gap:7px"><div class="tav">${ini(row.t.name)}</div><div><div class="tname">${row.t.name}</div><div class="tline">${row.t.line}</div>
+        ${row.t.lider?`<div class="tlider">👤 ${row.t.lider}</div>`:''}
+        ${row.t.mentor?`<div class="tmentor">🎓 ${row.t.mentor}</div>`:''}
+      </div></div></td>
+      ${mCells}
+      <td class="total-cell">${row.cumTotal}</td>
+      <td class="avg-cell">${row.cumAvg}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function toggleMonth(m){
+  if(m >= CUR_M) return;
+  if(!monthData[m])return;
+  const idx=activeMonths.indexOf(m);
+  if(idx>=0){ if(activeMonths.length===1){showToast('Debe haber al menos un mes activo');return;} activeMonths.splice(idx,1); }
+  else { activeMonths.push(m); activeMonths.sort((a,b)=>a-b); }
+  saveAll(); renderCumulative();
+}
+
+// ═══════════════════════════════════════
+// RENDER DESEMPEÑO
+// ═══════════════════════════════════════
+let desempMonth = Math.max(0, CUR_M - 1);
+
+function renderDesempNav() {
+  const pill  = document.getElementById('desemp-month-pill');
+  const prev  = document.getElementById('desemp-prev');
+  const next  = document.getElementById('desemp-next');
+  const chips = document.getElementById('desemp-chips');
+  if(pill)  pill.textContent  = MONTHS_F[desempMonth] + ' ' + NOW.getFullYear();
+  const bannerEl = document.getElementById('desemp-lock-banner');
+  if (bannerEl) bannerEl.style.display = desempMonth >= CUR_M ? 'flex' : 'none';
+  if(prev)  prev.disabled = desempMonth === 0;
+  if(next)  next.disabled = desempMonth === 11;
+  if(chips) {
+    chips.innerHTML = '';
+    for(let m=0; m<=11; m++){
+      const future = m > LAST_EDITABLE_M, hasD = !!monthData[m], active = m === desempMonth;
+      const ch = document.createElement('button');
+      ch.className = `mnav-chip${hasD?' has-data':''}${active?' active':''}${future?' future':''}`;
+      ch.textContent = MONTHS_S[m];
+      if(!future) ch.onclick = ()=>{ desempMonth=m; initMonth(m); renderDesempNav(); renderDesemp(); };
+      chips.appendChild(ch);
+    }
+  }
+}
+
+function navDesempMonth(d) {
+  const t = desempMonth + d;
+  if(t<0||t>LAST_EDITABLE_M) return;
+  desempMonth = t; initMonth(t); renderDesempNav(); renderDesemp();
+}
+
+const INDS = [
+  {key:'pets',       icon:'🛡️',label:'PETS',                  desc:'Cumplimiento %',                                              min:0,   max:99999, step:1},
+  {key:'sst',        icon:'🦺',label:'SST',                   desc:'Nº accidentes · 0=5 pts · ≥1=0 pts',                         min:0,   max:99,    step:1},
+  {key:'tarjetas',   icon:'🔴',label:'Tarjetas Rojas',        desc:'0-9=0 · 10-19=1 · 20-29=2 · 30-39=3 · 40-49=4 · ≥50=5',     min:0,   max:120,   step:5},
+  {key:'cultura',    icon:'🌟',label:'Cultura',               desc:'Calificación 1 a 5',                                          min:1,   max:5,     step:1},
+  {key:'cincoS',     icon:'🧹',label:'5S',                   desc:'<70%=0 · 70-90% lineal · ≥90%=5',                             min:0,   max:100,   step:1},
+  {key:'experticia', icon:'🏅',label:'Modelo de Experticia',  desc:'<80%=0 · 80-84%=1 · 85-89%=2 · 90-94%=3 · 95-99%=4 · 100%=5', min:0, max:100,  step:1},
+  {key:'creatividad',icon:'🎨',label:'Creatividad del Equipo',desc:'Puntos opcionales 0–10 · Aplica desde Abril',                 min:0,   max:10,    step:1},
+  {key:'llamados',   icon:'📋',label:'Llamados al Desempeño', desc:'Registro histórico',                                           min:0,   max:999,   step:1},
+];
+
+function calcIndPts(key,v){
+  if(key==='pets')       return clamp((v/100)*5,0,5);
+  if(key==='sst')        return v === 0 ? 5 : 0;
+  if(key==='tarjetas')   { const v2=v||0; return v2<10?0:v2<20?1:v2<30?2:v2<40?3:v2<50?4:5; }
+  if(key==='llamados')   return 0;
+  if(key==='cultura')    return ({1:0,2:1,3:2,4:4,5:5})[v]??2;
+  if(key==='cincoS')     return v<70 ? 0 : clamp((v-70)/(90-70)*5, 0, 5);
+  if(key==='experticia') return scoreExperticia(v);
+  if(key==='creatividad') return clamp(v??0, 0, 10);
+  return 0;
+}
+
+function renderDesemp(){
+  const desempBloqueado = desempMonth >= CUR_M;
+  initMonth(desempMonth); renderDesempNav();
+  const grid=document.getElementById('desemp-grid');
+  grid.innerHTML='';
+  BASE_TEAMS.forEach(t=>{
+    if (!monthData[desempMonth][t.id]) monthData[desempMonth][t.id] = genResultData(0, desempMonth);
+    const d=monthData[desempMonth][t.id].desemp;
+    const dp=calcDesempPts(d, desempMonth);
+    const card=document.createElement('div');
+    card.className='dcard'; card.id=`dc-${t.id}`;
+    const lider  = t.lider     ? `<div style="font-size:8.5px;color:#fff;font-weight:600;margin-top:1px">👤 ${t.lider}</div>`      : '';
+    const asist  = t.asistente ? `<div style="font-size:8px;color:rgba(255,255,255,.85);font-weight:500">🏥 ${t.asistente}</div>` : '';
+    const medico = t.medico    ? `<div style="font-size:8px;color:rgba(255,255,255,.85);font-weight:500">🔧 ${t.medico}</div>`    : '';
+    const mentor = t.mentor    ? `<div style="font-size:8px;color:rgba(255,255,255,.85);font-weight:500">🎓 ${t.mentor}</div>`    : '';
+    const rows=INDS.map(ind=>{
+      const v=d[ind.key];
+      const petsNoAplica      = ind.key==='pets'        && desempMonth===0;
+      const culturaNoAplica   = ind.key==='cultura'     && ![2,5,8,11].includes(desempMonth);
+      const creatividadNoAplica = ind.key==='creatividad' && desempMonth < 3;
+      const llamadosSoloInfo  = ind.key==='llamados';
+      const noAplica = petsNoAplica || culturaNoAplica || creatividadNoAplica;
+      const extraDesc = petsNoAplica ? ' · No aplica en Enero 2026' : culturaNoAplica ? ' · Se mide en Mar · Jun · Sep · Dic' : creatividadNoAplica ? ' · Aplica desde Abril 2026' : '';
+      if (noAplica) return `<div class="dirow" style="opacity:.5"><div><div class="dilbl">${ind.icon} ${ind.label}</div><div class="didesc">${ind.desc}${extraDesc}</div></div><div class="dipts" style="color:var(--t3)">N/A</div><div class="dicontrols"><div class="divv" style="color:var(--t3)">N/A</div></div></div>`;
+      const pts = ind.key==='experticia' ? scoreExperticia(v??0) : ind.key==='creatividad' ? clamp(v??0,0,10) : calcIndPts(ind.key,v);
+      const maxPtsInd = ind.key==='creatividad' ? 10 : 5;
+      const ptsLabel = `${(pts??0).toFixed(1)}/${maxPtsInd}`;
+      const displayVal = v !== null && v !== undefined ? v : '';
+      if (llamadosSoloInfo) return `<div class="dirow"><div><div class="dilbl">${ind.icon} ${ind.label}</div><div class="didesc">${ind.desc}</div></div><div class="dipts" style="color:var(--t3)">—</div><div class="dicontrols"><input class="di-input" type="number" id="dv-${t.id}-${ind.key}" value="${displayVal}" placeholder="—" min="${ind.min}" max="${ind.max}" step="${ind.step}" onchange="updateDesempInput(${t.id},'${ind.key}',this.value,${ind.min},${ind.max})" style="width:64px;height:28px;border:1.5px solid var(--border);border-radius:7px;padding:0 6px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--t1);background:var(--bg);outline:none;text-align:center"></div></div>`;
+      return `<div class="dirow"><div><div class="dilbl">${ind.icon} ${ind.label}</div><div class="didesc">${ind.desc}${extraDesc}</div></div><div class="dipts ${pts>=2.5?'pos':pts>0?'z':'neg'}" id="dp-${t.id}-${ind.key}">${ptsLabel} pts</div><div class="dicontrols"><input class="di-input" type="number" id="dv-${t.id}-${ind.key}" value="${displayVal}" placeholder="—" min="${ind.min}" max="${ind.max}" step="${ind.step}" onchange="updateDesempInput(${t.id},'${ind.key}',this.value,${ind.min},${ind.max})" ${desempBloqueado?'disabled':''} style="width:64px;height:28px;border:1.5px solid ${desempBloqueado?'#ccc':'var(--border)'};border-radius:7px;padding:0 6px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:${desempBloqueado?'#ccc':'var(--t1)'};background:${desempBloqueado?'#f5f5f5':'var(--bg)'};outline:none;text-align:center"></div></div>`;
+    }).join('');
+    const maxDesemp = dp.maxDesemp;
+    card.innerHTML=`
+      <div class="dchead">
+        <div class="dcav">${ini(t.name)}</div>
+        <div style="flex:1"><div class="dcname">${t.name}</div><div class="dcline">${t.line}</div>${lider}${asist}${medico}${mentor}</div>
+        <div class="dctotal"><div class="dctv" id="dct-${t.id}">${dp.total.toFixed(1)}/${maxDesemp}</div><div class="dctl">pts desemp.</div></div>
+      </div>
+      <div class="dcbody">${rows}</div>
+      <div style="padding:10px 14px;border-top:1px solid var(--border)">
+        <button onclick="saveDesempTeam(${t.id})" style="width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 0;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px">💾 Guardar ${t.name}</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function updateDesempInput(teamId, key, val, mn, mx) {
+  if (!monthData[desempMonth]) monthData[desempMonth] = {};
+  if (!monthData[desempMonth][teamId]) monthData[desempMonth][teamId] = { ton:null, pnc:null, oee:null, inocuidad:null, desemp:defaultDesemp() };
+  const d = monthData[desempMonth][teamId].desemp;
+  d[key] = val === '' ? null : clamp(parseFloat(val), mn, mx);
+  const dp = calcDesempPts(d, desempMonth);
+  const ptsEl = document.getElementById(`dp-${teamId}-${key}`);
+  if (ptsEl && d[key] !== null) {
+    const pts = key==='experticia' ? scoreExperticia(d[key]) : key==='creatividad' ? clamp(d[key],0,10) : calcIndPts(key, d[key]);
+    const maxPtsInd = key==='creatividad' ? 10 : 5;
+    if (pts !== null) { ptsEl.textContent = `${pts.toFixed(1)}/${maxPtsInd} pts`; ptsEl.className = `dipts ${pts>=(maxPtsInd*0.5)?'pos':pts>0?'z':'neg'}`; }
+  }
+  const totEl = document.getElementById(`dct-${teamId}`);
+  if (totEl) totEl.textContent = `${dp.total.toFixed(1)}/${dp.maxDesemp}`;
+}
+
+function saveDesempTeam(teamId) {
+  saveAll();
+  if (desempMonth === curMonth) renderMonthly();
+  showToast(`✓ Desempeño de ${BASE_TEAMS.find(t=>t.id===teamId)?.name} guardado para ${MONTHS_S[desempMonth]}`);
+}
+
+// ═══════════════════════════════════════
+// RENDER METAS
+// ═══════════════════════════════════════
+let metasView = 'mes';
+
+function setMetasView(v) {
+  metasView = v;
+  document.getElementById('mv-mes-sel').style.display = v==='mes' ? '' : 'none';
+  document.getElementById('mv-mes').classList.toggle('active', v==='mes');
+  renderMetas();
+}
+
+function renderMetasMonthChips() {
+  const wrap = document.getElementById('metas-month-chips');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  for (let m = 0; m <= 11; m++) {
+    const future = m > CUR_M, active = m === metasMonth;
+    const hasOwnMeta = BASE_TEAMS.some(t => metas[t.id] && metas[t.id][m]);
+    const ch = document.createElement('button');
+    ch.className = `mnav-chip${hasOwnMeta?' has-data':''}${active?' active':''}${future?' future':''}`;
+    ch.textContent = MONTHS_S[m];
+    if (!future) ch.onclick = () => { metasMonth = m; renderMetasMonthChips(); renderMetas(); };
+    wrap.appendChild(ch);
+  }
+}
+
+function renderMetas() {
+  const metasBloqueado = metasMonth >= CUR_M;
+  const metasBanner = document.getElementById('metas-lock-banner');
+  if (metasBanner) metasBanner.style.display = metasBloqueado ? 'block' : 'none';
+  renderMetasMonthChips();
+  const periodLabel = MONTHS_F[metasMonth] + ' ' + NOW.getFullYear();
+  const lbl = document.getElementById('metas-period-label');
+  if (lbl) lbl.textContent = periodLabel;
+  const grid = document.getElementById('metas-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  BASE_TEAMS.forEach((t) => {
+    const vigente = getMetaForMonth(t.id, metasMonth);
+    const ownMeta = (metas[t.id] && metas[t.id][metasMonth]) || null;
+    const isInherited = !ownMeta;
+    const m = ownMeta || vigente;
+    let inheritLabel = '';
+    if (isInherited) {
+      const qS = qStart(metasMonth);
+      for (let pm = metasMonth - 1; pm >= qS; pm--) { if (metas[t.id] && metas[t.id][pm]) { inheritLabel = `Hereda de ${MONTHS_S[pm]}`; break; } }
+      if (!inheritLabel) { for (let pm = qS - 1; pm >= 0; pm--) { if (metas[t.id] && metas[t.id][pm]) { inheritLabel = `Hereda de ${MONTHS_S[pm]}`; break; } } }
+      if (!inheritLabel) inheritLabel = 'Usando valores por defecto';
+    }
+    const card = document.createElement('div');
+    card.className = 'meta-card';
+    card.innerHTML = `
+      <div class="mch" style="${metasBloqueado?'pointer-events:none;opacity:.6':''}">
+        <div class="mcav">${ini(t.name)}</div>
+        <div style="flex:1;min-width:0">
+          <div class="mcname">${t.name}</div>
+          <div class="mcline">${t.line}</div>
+          <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:3px;font-size:9px;color:#fff;font-weight:600">👤<input style="border:none;border-bottom:1.5px solid rgba(255,255,255,.7);outline:none;font-size:9px;font-family:'Barlow',sans-serif;font-weight:600;color:#fff;background:transparent;width:90px;" value="${t.lider||''}" placeholder="Líder" onchange="BASE_TEAMS.find(x=>x.id===${t.id}).lider=this.value.trim();saveAll();showToast('✓ Líder guardado');" onclick="event.stopPropagation()"></label>
+            <label style="display:flex;align-items:center;gap:3px;font-size:9px;color:rgba(255,255,255,.85);font-weight:500">🏥<input style="border:none;border-bottom:1.5px solid rgba(255,255,255,.6);outline:none;font-size:9px;font-family:'Barlow',sans-serif;font-weight:500;color:rgba(255,255,255,.9);background:transparent;width:90px;" value="${t.asistente||''}" placeholder="Asistente Téc." onchange="BASE_TEAMS.find(x=>x.id===${t.id}).asistente=this.value.trim();saveAll();showToast('✓ Asistente guardado');" onclick="event.stopPropagation()"></label>
+            <label style="display:flex;align-items:center;gap:3px;font-size:9px;color:rgba(255,255,255,.85);font-weight:500">🔧<input style="border:none;border-bottom:1.5px solid rgba(255,255,255,.6);outline:none;font-size:9px;font-family:'Barlow',sans-serif;font-weight:500;color:rgba(255,255,255,.9);background:transparent;width:90px;" value="${t.medico||''}" placeholder="Cuerpo Médico" onchange="BASE_TEAMS.find(x=>x.id===${t.id}).medico=this.value.trim();saveAll();showToast('✓ Cuerpo Médico guardado');" onclick="event.stopPropagation()"></label>
+            <label style="display:flex;align-items:center;gap:3px;font-size:9px;color:rgba(255,255,255,.85);font-weight:500">🎓<input style="border:none;border-bottom:1.5px solid rgba(255,255,255,.6);outline:none;font-size:9px;font-family:'Barlow',sans-serif;font-weight:500;color:rgba(255,255,255,.9);background:transparent;width:90px;" value="${t.mentor||''}" placeholder="Mentor" onchange="BASE_TEAMS.find(x=>x.id===${t.id}).mentor=this.value.trim();saveAll();showToast('✓ Mentor guardado');" onclick="event.stopPropagation()"></label>
+          </div>
+        </div>
+        ${isInherited ? `<div style="font-size:8.5px;color:var(--t3);background:var(--bg);border-radius:6px;padding:3px 7px;text-align:center;border:1px solid var(--border)">🔗 ${inheritLabel}</div>` : `<div style="font-size:8.5px;color:var(--green);font-weight:700;padding:3px 7px">✓ Meta propia</div>`}
+      </div>
+      <div class="mcbody">
+        <div class="meta-row" style="grid-column:1/-1;background:#eef4ff;border-radius:8px;padding:10px 12px;border:1.5px solid #c0d0f0">
+          <div class="meta-label" style="color:var(--navy);margin-bottom:6px">⚡ OEE / Eficiencia</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div><div style="font-size:8.5px;color:var(--t3);font-weight:600;margin-bottom:3px">📍 Línea Base %</div><input class="meta-input" type="number" step="0.1" min="0" max="100" value="${m.oeeBase??''}" id="mt-${t.id}-oeeBase" placeholder="ej: 72.5" style="height:24px;font-size:12px" ${metasBloqueado?"disabled":""} onchange="autoSaveMeta(${t.id})"></div>
+            <div><div style="font-size:8.5px;color:var(--navy);font-weight:600;margin-bottom:3px">🎯 Meta %</div><input class="meta-input" type="number" step="0.1" min="0" max="100" value="${m.oeeMeta??''}" id="mt-${t.id}-oeeMeta" placeholder="ej: 80.0" style="height:24px;font-size:12px" ${metasBloqueado?"disabled":""} onchange="autoSaveMeta(${t.id})"></div>
+            <div><div style="font-size:8.5px;color:#007934;font-weight:600;margin-bottom:3px">📊 Resultado %</div><input class="meta-input" type="number" step="0.1" min="0" max="100" value="${monthData[metasMonth]?.[t.id]?.oee??''}" id="mt-${t.id}-oeeResult" placeholder="ej: 76.3" style="border-color:#007934;height:24px;font-size:12px" ${metasBloqueado?"disabled":""} onchange="autoSaveMeta(${t.id})"></div>
+          </div>
+        </div>
+        <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 2fr;gap:10px;align-items:start">
+          <div class="meta-row" style="background:#f0faf2;border-radius:8px;padding:10px 12px;border:1.5px solid #b8e8c8">
+            <div class="meta-label" style="color:#007934;margin-bottom:6px">📦 Toneladas <span style="margin-left:auto;font-size:9px;font-weight:400;color:var(--t3)">máx 15 pts</span></div>
+            <div style="font-size:8.5px;color:#007934;font-weight:600;margin-bottom:3px">% Cumplimiento</div>
+            <input class="meta-input" type="number" step="0.1" min="0" max="200" value="${monthData[metasMonth]?.[t.id]?.ton??''}" id="mt-${t.id}-tonResult" placeholder="ej: 95.4" style="border-color:#007934;height:24px;font-size:12px" ${metasBloqueado?"disabled":""} onchange="autoSaveMeta(${t.id})">
+          </div>
+          <div class="meta-row" style="background:#faf5ff;border-radius:8px;padding:10px 12px;border:1.5px solid #d4b8f0">
+            <div class="meta-label" style="color:#6a1fa0;margin-bottom:6px">⚖️ PNC</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+              <div><div style="font-size:8.5px;color:var(--t3);font-weight:600;margin-bottom:3px">Base %</div><input class="meta-input" type="number" step="0.01" min="0" max="100" value="${m.pncBase??''}" id="mt-${t.id}-pncBase" placeholder="ej: 3.5" style="height:24px;font-size:10px" ${metasBloqueado?"disabled":""} onchange="autoSaveMeta(${t.id})"></div>
+              <div><div style="font-size:8.5px;color:#6a1fa0;font-weight:600;margin-bottom:3px">Meta %</div><input class="meta-input" type="number" step="0.01" min="0" max="100" value="${m.pncMeta??''}" id="mt-${t.id}-pncMeta" placeholder="ej: 2.0" style="height:24px;font-size:10px" ${metasBloqueado?"disabled":""} onchange="autoSaveMeta(${t.id})"></div>
+              <div><div style="font-size:8.5px;color:#007934;font-weight:600;margin-bottom:3px">Resultado %</div><input class="meta-input" type="number" step="0.01" min="0" max="100" value="${monthData[metasMonth]?.[t.id]?.pnc??''}" id="mt-${t.id}-pncResult" placeholder="ej: 2.8" style="border-color:#007934;height:24px;font-size:10px" ${metasBloqueado?"disabled":""} onchange="autoSaveMeta(${t.id})"></div>
+            </div>
+          </div>
+        </div>
+        <div class="meta-row" style="grid-column:1/-1;background:#f5f0ff;border-radius:8px;padding:10px 12px;border:1.5px solid #c8b8f0">
+          <div class="meta-label" style="color:#410099;margin-bottom:6px">🧩 Matriz de Habilidades <span style="margin-left:auto;font-size:9px;font-weight:400;color:var(--t3)">% acumulado del año · máx 15 pts</span></div>
+          <input class="meta-input" type="number" step="0.1" min="0" max="100" value="${monthData[metasMonth]?.[t.id]?.matriz??''}" id="mt-${t.id}-matriz" placeholder="ej: 88.5" style="border-color:#410099;height:24px;font-size:12px" ${metasBloqueado?"disabled":""} onchange="autoSaveMeta(${t.id})">
+        </div>
+        <div class="meta-row" style="grid-column:1/-1;background:#fff5f5;border-radius:8px;padding:10px 12px;border:1.5px solid #fca5a5">
+          <div class="meta-label" style="color:#DC2626;margin-bottom:6px">🦠 Eventos de Inocuidad <span style="margin-left:auto;font-size:9px;font-weight:400;color:var(--t3)">Cada evento resta −15 pts</span></div>
+          <input class="meta-input" type="number" step="1" min="0" max="999" value="${monthData[metasMonth]?.[t.id]?.inocuidad??''}" id="mt-${t.id}-inocuidad" placeholder="ej: 0" style="border-color:#DC2626;height:24px;font-size:12px" ${metasBloqueado?"disabled":""} onchange="autoSaveMeta(${t.id})">
+        </div>
+      </div>
+      <div style="padding:0 14px 12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="meta-save-btn" onclick="saveMetaTeamMonth(${t.id})" ${metasBloqueado?"disabled style='opacity:.4;cursor:not-allowed'":""}>💾 Guardar ${MONTHS_S[metasMonth]}</button>
+        <button style="background:none;border:1.5px solid var(--red);color:var(--red);font-size:11px;cursor:pointer;padding:4px 10px;border-radius:6px;font-weight:600" onclick="clearMetaTeamMonth(${t.id})">🗑 Quitar meta ${MONTHS_S[metasMonth]}</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function autoSaveMeta(teamId) { saveMetaTeamMonth(teamId); showToast(`✓ Guardado automáticamente`); }
+
+function saveMetaTeamMonth(teamId) {
+  const get = f => { const el = document.getElementById(`mt-${teamId}-${f}`); return el && el.value !== '' ? parseFloat(el.value) : null; };
+  setMetaForMonth(teamId, metasMonth, { ton: get('ton'), oeeBase: get('oeeBase'), oeeMeta: get('oeeMeta'), pncBase: get('pncBase'), pncMeta: get('pncMeta') });
+  if (!monthData[metasMonth]) monthData[metasMonth] = {};
+  if (!monthData[metasMonth][teamId]) monthData[metasMonth][teamId] = { ton:null, pnc:null, mpr:null, des:null, oee:null, inocuidad:null, desemp:defaultDesemp() };
+  const d = monthData[metasMonth][teamId];
+  const oeeRes = get('oeeResult'); if (oeeRes !== null) d.oee = oeeRes;
+  const tonRes = get('tonResult'); if (tonRes !== null) d.ton = tonRes;
+  const pncRes = get('pncResult'); if (pncRes !== null) d.pnc = pncRes;
+  const matrizRes = get('matriz'); if (matrizRes !== null) d.matriz = matrizRes;
+  const inocRes = get('inocuidad'); d.inocuidad = inocRes !== null ? inocRes : null;
+  saveAll(); renderMonthly(); renderMetas();
+  showToast(`✓ ${BASE_TEAMS.find(t=>t.id===teamId).name} guardado para ${MONTHS_S[metasMonth]}`);
+}
+
+function clearMetaTeamMonth(teamId) {
+  const teamName = BASE_TEAMS.find(t => t.id === teamId)?.name || '';
+  if (!confirm(`¿Quitar la meta de ${MONTHS_F[metasMonth]} para ${teamName}?`)) return;
+  if (metas[teamId]) delete metas[teamId][metasMonth];
+  saveAll(); renderMonthly(); renderMetas();
+  showToast(`✓ Meta eliminada`);
+}
+
+// ═══════════════════════════════════════
+// DETAIL MODAL
+// ═══════════════════════════════════════
+function openDetail(teamId, isCum=false){
+  if(editMode) return;
+  const t=BASE_TEAMS.find(x=>x.id===teamId);
+  const s=getTeamMonthScore(teamId,curMonth);
+  if (!s) { showToast('Sin datos para este mes'); return; }
+  const cum=getTeamCumulative(teamId);
+  const cat=getCat(s.total, s.maxPts ?? 95);
+  const catCum=getCat(cum.cumTotal,activeMonths.length*95);
+  const liderBadge  = t.lider     ? `<span style="background:#e8edf8;color:var(--navy);border-radius:20px;padding:2px 9px;font-size:10px;font-weight:600;margin-right:4px">👤 ${t.lider}</span>`     : '';
+  const mentorBadge = t.mentor    ? `<span style="background:#f2eaf8;color:var(--purple);border-radius:20px;padding:2px 9px;font-size:10px;font-weight:600">🎓 ${t.mentor}</span>`              : '';
+  document.getElementById('dpanel-inner').innerHTML=`
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:var(--navy);margin-bottom:2px">${t.name}</div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:6px">${t.line} · ${MONTHS_F[curMonth]} ${NOW.getFullYear()}</div>
+    ${(liderBadge||mentorBadge)?`<div style="margin-bottom:12px">${liderBadge}${mentorBadge}</div>`:''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+      <div style="background:var(--navy-l);border-radius:9px;padding:10px 14px;text-align:center">
+        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:600">Resultado</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--navy)">${s.res.toFixed(1)}<span style="font-size:12px">/60</span></div>
+      </div>
+      <div style="background:var(--pl);border-radius:9px;padding:10px 14px;text-align:center">
+        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:600">Desempeño</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--purple)">${s.desemp.toFixed(1)}<span style="font-size:12px">/${s.dp?.maxDesemp??40}</span></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border);margin-bottom:14px">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--t2)">Puntaje ${MONTHS_F[curMonth]}</div>
+        <div style="margin-top:3px"><span class="cpill ${cat.c}">${cat.e} ${cat.l}</span></div>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:800;color:var(--navy)">${s.total.toFixed(1)}<span style="font-size:14px">/${s.maxPts??60}</span></div>
+    </div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px">Acumulado Anual</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+      ${activeMonths.map(m=>{const v=cum.monthly[m];return`<div style="background:var(--bg);border-radius:7px;padding:6px 10px;border:1px solid var(--border);text-align:center;min-width:46px"><div style="font-size:9px;color:var(--t3);font-weight:600">${MONTHS_S[m]}</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:${v>=46?'#b08800':v>=38?'var(--navy)':'var(--t2)'}">${v!==undefined?v:'—'}</div></div>`;}).join('')}
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--t2)">Total Acumulado · Prom. ${cum.cumAvg}</div>
+        <div style="margin-top:3px"><span class="cpill ${catCum.c}">${catCum.e} ${catCum.l}</span></div>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:800;color:var(--navy)">${cum.cumTotal}</div>
+    </div>`;
+  document.getElementById('doverlay').classList.add('open');
+}
+function closeDetail(e){if(e.target===document.getElementById('doverlay'))document.getElementById('doverlay').classList.remove('open');}
+function closeDetailBtn(){document.getElementById('doverlay').classList.remove('open');}
+
+// ═══════════════════════════════════════
+// EDIT INLINE
+// ═══════════════════════════════════════
+function toggleEdit(){
+  editMode=!editMode;
+  document.body.classList.toggle('emode',editMode);
+  document.getElementById('etog').classList.toggle('on',editMode);
+  document.getElementById('etogLbl').textContent=editMode?'⏹ Salir edición':'✏️ Editar';
+  document.getElementById('ebanner').classList.toggle('show',editMode);
+  document.getElementById('footer-hint').textContent=editMode?'✏️ Clic en valores para editarlos':'Haz clic en un equipo para ver su detalle completo';
+  renderMonthly();
+}
+function saveExit(){
+  editMode=false;
+  document.body.classList.remove('emode');
+  document.getElementById('etog').classList.remove('on');
+  document.getElementById('etogLbl').textContent='✏️ Editar';
+  document.getElementById('ebanner').classList.remove('show');
+  document.getElementById('footer-hint').textContent='Haz clic en un equipo para ver su detalle completo';
+  saveAll(); renderMonthly(); showToast('✓ Datos guardados');
+}
+function resetMonth(){
+  if(!confirm(`¿Restablecer ${MONTHS_F[curMonth]}?`)) return;
+  monthData[curMonth]={};
+  BASE_TEAMS.forEach((t,idx)=>{ monthData[curMonth][t.id]=genResultData(idx,curMonth); });
+  saveAll(); renderMonthly(); showToast(`↩ ${MONTHS_F[curMonth]} restablecido`);
+}
+function clearAllData(){
+  if(!confirm('⚠️ ¿Borrar TODOS los datos? Esta acción no se puede deshacer.')) return;
+  ['tpm2026_monthData','tpm2026_teams','tpm2026_metas','tpm2026_activeMonths'].forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
+  location.reload();
+}
+
+function startEditMetric(e,teamId,field){
+  if(!editMode) return; e.stopPropagation();
+  const cell=e.currentTarget; if(cell.querySelector('input')) return;
+  const d=monthData[curMonth][teamId]; const valEl=cell.querySelector('.scv'); valEl.style.visibility='hidden';
+  const inp=document.createElement('input'); inp.type='number'; inp.step='0.1'; inp.min='0'; inp.max='100'; inp.className='ci'; inp.value=d[field];
+  cell.appendChild(inp); inp.focus(); inp.select();
+  function commit(){ const v=parseFloat(inp.value); if(!isNaN(v)&&v>=0&&v<=100) d[field]=Math.round(v*10)/10; inp.remove(); valEl.style.visibility=''; saveAll(); renderMonthly(); }
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commit();}if(e.key==='Escape'){inp.remove();valEl.style.visibility='';}});
+  inp.addEventListener('blur',()=>setTimeout(commit,80));
+}
+
+function startEditOEE(e,teamId){
+  if(!editMode) return; e.stopPropagation();
+  const cell=e.currentTarget; if(cell.querySelector('input')) return;
+  const d=monthData[curMonth][teamId]; const valEl=cell.querySelector('.scv'); valEl.style.visibility='hidden';
+  const inp=document.createElement('input'); inp.type='number'; inp.step='0.1'; inp.min='0'; inp.max='100'; inp.className='ci'; inp.value=d.oee;
+  cell.appendChild(inp); inp.focus(); inp.select();
+  function commit(){ const v=parseFloat(inp.value); if(!isNaN(v)&&v>=0&&v<=100) d.oee=Math.round(v*10)/10; inp.remove(); valEl.style.visibility=''; saveAll(); renderMonthly(); }
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commit();}if(e.key==='Escape'){inp.remove();valEl.style.visibility='';}});
+  inp.addEventListener('blur',()=>setTimeout(commit,80));
+}
+
+function startEditName(e,teamId){
+  if(!editMode) return; e.stopPropagation();
+  const cell=e.currentTarget; if(cell.querySelector('input')) return;
+  const t=BASE_TEAMS.find(x=>x.id===teamId); const textDiv=cell.querySelector('div:last-child'); textDiv.style.visibility='hidden';
+  const wrap=document.createElement('div'); wrap.style.cssText='display:flex;flex-direction:column;gap:2px;';
+  const i1=document.createElement('input'); i1.className='ni'; i1.value=t.name; i1.placeholder='Nombre';
+  const i2=document.createElement('input'); i2.className='ni'; i2.value=t.line; i2.placeholder='Línea';
+  wrap.appendChild(i1); wrap.appendChild(i2); cell.appendChild(wrap); i1.focus(); i1.select();
+  let done=false;
+  function commit(){ if(done) return; done=true; t.name=i1.value.trim()||t.name; t.line=i2.value.trim()||t.line; wrap.remove(); textDiv.style.visibility=''; saveAll(); renderMonthly(); }
+  [i1,i2].forEach(inp=>{ inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commit();}if(e.key==='Escape'){wrap.remove();textDiv.style.visibility='';done=true;}}); inp.addEventListener('blur',()=>setTimeout(()=>{if(!wrap.contains(document.activeElement))commit();},120)); });
+}
+
+// ═══════════════════════════════════════
+// SORT
+// ═══════════════════════════════════════
+function sortM(field,e){
+  if(e) e.stopPropagation();
+  if(sortFieldM===field) sortAscM=!sortAscM; else{sortFieldM=field;sortAscM=false;}
+  document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('active'));
+  if(e&&e.target) e.target.classList.add('active');
+  document.querySelectorAll('.rth span').forEach(s=>s.classList.remove('sorted'));
+  const h=document.getElementById('hm-'+field); if(h) h.classList.add('sorted');
+  renderMonthly();
+}
+function sortC(field,e){
+  if(e) e.stopPropagation();
+  if(sortFieldC===field) sortAscC=!sortAscC; else{sortFieldC=field;sortAscC=false;}
+  renderCumulative();
+}
+
+// ═══════════════════════════════════════
+// PERSON RANKINGS
+// ═══════════════════════════════════════
+function renderPersonRanking(role) {
+  const roleMap = {
+    lider:     { month: liderMonth,     view: liderView,     containerId:'lideres-content',   chipsId:'lider-month-chips',  pillId:'lider-month-pill',  label:'Dir. Técnico'   },
+    asistente: { month: asistenteMonth, view: asistenteView, containerId:'asistentes-content',chipsId:'lider-month-chips',  pillId:'lider-month-pill',  label:'Asistente Téc.' },
+    medico:    { month: medicoMonth,    view: medicoView,    containerId:'medicos-content',   chipsId:'lider-month-chips',  pillId:'lider-month-pill',  label:'Cuerpo Médico'  },
+    mentor:    { month: mentorMonth,    view: mentorView,    containerId:'mentores-content',  chipsId:'mentor-month-chips', pillId:'mentor-month-pill', label:'Mentor'         },
+  };
+  const rm = roleMap[role] || roleMap['mentor'];
+  const personMonth = rm.month;
+  const container = document.getElementById(rm.containerId);
+  if (!container) return;
+  const pill = document.getElementById(rm.pillId);
+  const personView = (role==='mentor') ? mentorView : liderView;
+  if(pill) pill.textContent = personView==='acumulado' ? 'Acumulado 2026' : MONTHS_F[personMonth] + ' ' + NOW.getFullYear();
+
+  if (personView === 'acumulado') {
+    const groups = {};
+    BASE_TEAMS.forEach(t => {
+      const person = (t[role] || '').trim();
+      if (!person) return;
+      if (!groups[person]) groups[person] = { name: person, teams: [], cums: [] };
+      groups[person].teams.push(t);
+      groups[person].cums.push(getTeamCumulative(t.id));
+    });
+    const persons = Object.values(groups).map(g => {
+      const n = g.cums.length, cumTot = g.cums.reduce((a,c)=>a+c.cumTotal,0);
+      return { ...g, n, cumTot, avgCum: parseFloat((cumTot/n).toFixed(2)) };
+    }).sort((a,b) => b.avgCum - a.avgCum);
+    if (!persons.length) { container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--t3)">Sin ${rm.label}s asignados</div>`; return; }
+    container.innerHTML = `<div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+      ${persons.map((p,i)=>{
+        const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1;
+        const ac = avatarColor(p.name);
+        return `<div style="display:grid;grid-template-columns:40px 1fr 80px 80px;padding:12px 16px;gap:0;align-items:center;border-top:${i?'1px solid var(--border)':'none'}">
+          <div style="font-size:16px;text-align:center">${medal}</div>
+          <div style="display:flex;align-items:center;gap:9px">
+            <div style="width:32px;height:32px;border-radius:50%;background:${ac};display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#fff">${initials(p.name)}</div>
+            <div><div style="font-size:13px;font-weight:700">${p.name}</div><div style="font-size:9px;color:var(--t3)">${p.n} equipo${p.n>1?'s':''}</div></div>
+          </div>
+          <div style="text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--navy)">${p.cumTot.toFixed(1)}</div>
+          <div style="text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--t2)">${p.avgCum.toFixed(1)}<br><span style="font-size:8px;font-weight:400">prom/eq</span></div>
+        </div>`;
+      }).join('')}
+    </div>`;
+    return;
+  }
+
+  const groups = {};
+  const sinAsignar = [];
+  BASE_TEAMS.forEach(t => {
+    const person = (t[role] || '').trim();
+    const s = safeScore(t.id, personMonth);
+    if (!person) { sinAsignar.push({t, s}); return; }
+    if (!groups[person]) groups[person] = { name: person, teams: [], scores: [] };
+    groups[person].teams.push(t);
+    groups[person].scores.push(s);
+  });
+  const persons = Object.values(groups).map(g => {
+    const n=g.scores.length, tot=g.scores.reduce((a,s)=>a+s.total,0), res=g.scores.reduce((a,s)=>a+s.res,0), desp=g.scores.reduce((a,s)=>a+s.desemp,0);
+    return { ...g, n, tot, res, desp, avg: parseFloat((tot/n).toFixed(2)), avgRes: parseFloat((res/n).toFixed(2)), avgDesp: parseFloat((desp/n).toFixed(2)) };
+  }).sort((a,b) => b.avg - a.avg);
+
+  if (!persons.length && !sinAsignar.length) {
+    container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--t3)">Sin ${rm.label}s asignados. Asígnalos en 🎯 Metas.</div>`;
+    return;
+  }
+
+  let html = `<div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:0 2px 12px rgba(0,51,160,.06)">
+    <div style="display:grid;grid-template-columns:40px 1fr 60px 70px 70px 70px 80px;background:var(--navy);padding:10px 16px;gap:0;align-items:center">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">#</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6)">${rm.label.toUpperCase()}</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">EQ.</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">P.TOTAL</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">RES.<br><span style="font-size:8px;opacity:.6">/60</span></span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.6);text-align:center">DESEMP.<br><span style="font-size:8px;opacity:.6">/35</span></span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:var(--yellow);text-align:center">PROM/EQ</span>
+    </div>`;
+
+  persons.forEach((p,i) => {
+    const rank=i+1, ac=avatarColor(p.name);
+    const rowBg = rank===1?'#fffef0':rank===2?'#fafbff':rank===3?'#fdf9f6':'#fff';
+    html += `
+    <div style="border-top:1px solid var(--border)">
+
+      <!-- ── Fila resumen persona ── -->
+      <div style="display:grid;grid-template-columns:40px 1fr 60px 70px 70px 70px 80px;padding:11px 16px;gap:0;align-items:center;cursor:pointer;background:${rowBg};transition:background .12s"
+        onclick="togglePersonDetail('pd-${role}-${i}')"
+        onmouseenter="this.style.background='#eef2ff'" onmouseleave="this.style.background='${rowBg}'">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--t3);text-align:center">${rank<=3?['🥇','🥈','🥉'][rank-1]:rank}</div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <div style="width:34px;height:34px;border-radius:50%;background:${ac};display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#fff;flex-shrink:0">${initials(p.name)}</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--t1)">${p.name}</div>
+            <div style="font-size:9px;color:var(--t3)">${p.n} equipo${p.n>1?'s':''} · <span style="color:var(--navy)">▾ ver detalle</span></div>
+          </div>
+        </div>
+        <div style="text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--navy)">${p.n}</div>
+        <div style="text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--navy)">${p.tot.toFixed(1)}</div>
+        <div style="text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--navy)">${p.avgRes.toFixed(1)}</div>
+          <div style="font-size:8px;color:var(--t3)">prom/eq</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--purple)">${p.avgDesp.toFixed(1)}</div>
+          <div style="font-size:8px;color:var(--t3)">prom/eq</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy)">${p.avg.toFixed(1)}</div>
+          <div style="height:4px;background:var(--border);border-radius:2px;margin:3px 4px 0">
+            <div style="height:100%;border-radius:2px;background:${ac};width:${Math.min(100,(p.avg/95)*100)}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Panel de equipos (colapsable) ── -->
+      <div id="pd-${role}-${i}" style="display:none;background:#f4f6fb;border-top:1px solid var(--border);padding:12px 16px">
+        <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">
+          Equipos de ${p.name}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          ${p.scores.map((sc,si) => {
+            const t   = p.teams[si];
+            const ac2 = avatarColor(t.name);
+            const dp  = sc.dp || calcDesempPts(defaultDesemp(), personMonth);
+            const maxPts = sc.maxPts ?? 60;
+            const pctRes = Math.min(100,(sc.res/60)*100);
+            const pctDes = Math.min(100,(sc.desemp/(dp.maxDesemp||35))*100);
+            const pctTot = Math.min(100,(sc.total/maxPts)*100);
+            const diff    = sc.total - p.avg;
+            const diffCol = diff>=0?'#007934':Math.abs(diff)<=8?'#ea6608':'#c00';
+            const diffLbl = diff>0?`▲ +${diff.toFixed(1)}`:diff<0?`▼ ${diff.toFixed(1)}`:'= prom';
+
+            return `<div style="background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer" onclick="event.stopPropagation();openDetail(${t.id})">
+              <div style="display:grid;grid-template-columns:1fr 90px 90px 90px;align-items:center;gap:0;padding:10px 14px">
+
+                <!-- Nombre y línea -->
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="width:28px;height:28px;border-radius:50%;background:${ac2};display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">${ini(t.name)}</div>
+                  <div>
+                    <div style="font-size:12px;font-weight:700;color:var(--navy)">${t.name}</div>
+                    <div style="font-size:9px;color:var(--t3)">${t.line}</div>
+                    <span style="font-size:8px;font-weight:700;color:${diffCol}">${diffLbl} vs prom</span>
+                  </div>
+                </div>
+
+                <!-- Resultado -->
+                <div style="text-align:center;padding:0 6px">
+                  <div style="font-size:9px;font-weight:700;color:var(--navy);margin-bottom:3px">📊 Resultado</div>
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);line-height:1">${sc.res.toFixed(1)}</div>
+                  <div style="font-size:8px;color:var(--t3);margin-bottom:3px">/60 pts</div>
+                  <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+                    <div style="height:100%;border-radius:3px;background:var(--navy);width:${pctRes}%"></div>
+                  </div>
+                </div>
+
+                <!-- Desempeño -->
+                <div style="text-align:center;padding:0 6px;border-left:1px solid var(--border)">
+                  <div style="font-size:9px;font-weight:700;color:var(--purple);margin-bottom:3px">📋 Desempeño</div>
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--purple);line-height:1">${sc.desemp.toFixed(1)}</div>
+                  <div style="font-size:8px;color:var(--t3);margin-bottom:3px">/${dp.maxDesemp} pts</div>
+                  <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+                    <div style="height:100%;border-radius:3px;background:var(--purple);width:${pctDes}%"></div>
+                  </div>
+                </div>
+
+                <!-- Total -->
+                <div style="text-align:center;padding:0 6px;border-left:1px solid var(--border)">
+                  <div style="font-size:9px;font-weight:700;color:var(--t2);margin-bottom:3px">🏆 Total</div>
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--navy);line-height:1">${sc.total.toFixed(1)}</div>
+                  <div style="font-size:8px;color:var(--t3);margin-bottom:3px">/${maxPts} pts</div>
+                  <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+                    <div style="height:100%;border-radius:3px;background:linear-gradient(90deg,var(--navy),#4477dd);width:${pctTot}%"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+
+    </div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function togglePersonDetail(id) { const el=document.getElementById(id); if(el) el.style.display=el.style.display==='none'?'':'none'; }
+
+// ═══════════════════════════════════════
+// TAB SWITCH
+// ═══════════════════════════════════════
+function showTab(name){
+  ['ranking','acumulado','desemp','metas','lideres','mentores','historico','premiacion'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===name?'':'none';
+  });
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.toggle('active',['ranking','acumulado','desemp','metas','lideres','mentores','historico','premiacion'][i]===name);
+  });
+  if(name==='historico')  renderHistorico();
+  if(name==='acumulado') renderCumulative();
+  if(name==='desemp')  { desempMonth=Math.min(curMonth, LAST_EDITABLE_M); renderDesemp(); }
+  if(name==='metas')   { metasMonth=Math.min(curMonth, LAST_EDITABLE_M); renderMetas(); }
+  if(name==='lideres')    { liderMonth=Math.min(curMonth,LAST_EDITABLE_M); asistenteMonth=liderMonth; medicoMonth=liderMonth; setTecnicoView('mes'); }
+  if(name==='mentores')   { mentorView='mes'; mentorMonth=Math.min(curMonth,LAST_EDITABLE_M); renderPersonRanking('mentor'); }
+  if(name==='premiacion') { initPremChips(); renderPremiacion(); }
+}
+
+// ═══════════════════════════════════════
+// EDIT LEADER / MENTOR INLINE
+// ═══════════════════════════════════════
+function startEditTeamField(ev, teamId, field) {
+  ev.stopPropagation();
+  const t = BASE_TEAMS.find(x=>x.id===teamId);
+  const el = ev.currentTarget;
+  if (el.querySelector('input')) return;
+  const current = t[field] || '';
+  const isCls = field==='name' ? 'tname' : 'tline';
+  el.onmouseenter = null; el.onmouseleave = null;
+  el.style.background = 'rgba(0,51,160,.07)';
+  const inp = document.createElement('input');
+  inp.value = current;
+  inp.placeholder = field==='name' ? 'Nombre equipo...' : 'Nombre línea...';
+  inp.style.cssText = `border:none;border-bottom:1.5px solid var(--navy);outline:none;font-size:${field==='name'?'12':'9'}px;font-family:'Barlow',sans-serif;font-weight:${field==='name'?'600':'400'};color:var(--navy);background:transparent;width:140px;padding:0 1px;`;
+  el.innerHTML = ''; el.appendChild(inp);
+  inp.focus(); inp.select();
+  const save = () => {
+    const val = inp.value.trim() || current;
+    t[field] = val; saveAll(); renderMonthly();
+    showToast(`✓ ${field==='name'?'Equipo':'Línea'} actualizado`);
+  };
+  inp.addEventListener('blur', save);
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault();inp.blur();} if(e.key==='Escape'){t[field]=current;inp.blur();} });
+}
+
+function startInlineEdit(ev, teamId, field) {
+  ev.stopPropagation();
+  const t = BASE_TEAMS.find(x=>x.id===teamId);
+  const labelId = `${field}-label-${teamId}`;
+  const labelEl = document.getElementById(labelId);
+  if(!labelEl || labelEl.querySelector('input')) return;
+  const current = t[field] || '';
+  const icons = { lider:'👤', asistente:'🏥', medico:'🔧', mentor:'🎓' };
+  const placeholders = { lider:'Dir. Técnico...', asistente:'Asistente Téc....', medico:'Cuerpo Médico...', mentor:'Mentor...' };
+  const defaults = { lider:'Dir. Técnico', asistente:'Asistente', medico:'Cuerpo Médico', mentor:'Mentor' };
+  const icon = icons[field] || '👤';
+  const isMentor = field === 'mentor';
+  labelEl.innerHTML = `<span style="font-size:9px">${icon}</span><input class="lm-input${isMentor?' mentor':''}" id="lm-inp-${teamId}-${field}" value="${current}" placeholder="${placeholders[field]||''}" maxlength="40" onclick="event.stopPropagation()" style="width:120px">`;
+  const inp = document.getElementById(`lm-inp-${teamId}-${field}`);
+  inp.focus(); inp.select();
+  const save = () => {
+    const val = inp.value.trim(); t[field] = val; saveAll();
+    labelEl.innerHTML = `<span style="font-size:9px">${icon}</span><span class="${val?'':'lm-placeholder'}">${val||defaults[field]}</span><span class="lm-pencil">✏️</span>`;
+    showToast(`✓ ${defaults[field]} actualizado`);
+  };
+  inp.addEventListener('blur', save);
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault();inp.blur();} if(e.key==='Escape'){inp.value=current;inp.blur();} });
+}
+
+// ═══════════════════════════════════════
+// HISTORICO
+// ═══════════════════════════════════════
+let histTeamId = 1, histInd = 'oee', histCompareMode = false;
+const HIST_COLORS = ['#0033a0','#e50695','#ea6608','#007934','#ffdb00','#871555','#410099','#0093d9','#76b62a','#503629','#fbe91f','#a51680','#005aa6','#006241','#f5a404','#7b868c','#006241','#c8a800','#0093d9','#d4896a'];
+const HIST_INDS = {
+  oee:{label:'⚡ OEE',unit:'%',src:'result',maxPts:15,color:'#0093d9',hasMeta:false},
+  ton:{label:'📦 Toneladas',unit:'%',src:'result',maxPts:15,color:'#0033a0',hasMeta:true},
+  pnc:{label:'⚖️ PNC',unit:'%',src:'result',maxPts:5,color:'#c8a800',hasMeta:true},
+  pets:{label:'🛡️ PETS',unit:'%',src:'desemp',maxPts:5,color:'#007934',hasMeta:false},
+  sst:{label:'🦺 SST',unit:'',src:'desemp',maxPts:5,color:'#e50695',hasMeta:false},
+  tarjetas:{label:'🔴 T.Rojas',unit:'',src:'desemp',maxPts:5,color:'#ea6608',hasMeta:false},
+  llamados:{label:'📋 Llamados',unit:'',src:'desemp',maxPts:5,color:'#871555',hasMeta:false},
+  cultura:{label:'🌟 Cultura',unit:'',src:'desemp',maxPts:5,color:'#f5a404',hasMeta:false},
+  cincoS:{label:'🧹 5S',unit:'%',src:'desemp',maxPts:5,color:'#007934',hasMeta:false},
+  total:{label:'🏆 Puntaje Total',unit:' pts',src:'total',maxPts:60,color:'#0033a0',hasMeta:false},
+};
+
+function getHistValue(mIdx, teamId, ind) {
+  const d = monthData[mIdx] && monthData[mIdx][teamId];
+  if (!d) return null;
+  if (ind === 'total') { const s = getTeamMonthScore(teamId, mIdx); return s ? s.total : null; }
+  if (HIST_INDS[ind]?.src === 'result') return d[ind] ?? null;
+  return d.desemp ? (d.desemp[ind] ?? null) : null;
+}
+
+function setHistInd(ind) {
+  histInd = ind;
+  document.querySelectorAll('.hist-ind-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('hib-'+ind); if (btn) btn.classList.add('active');
+  renderHistorico();
+}
+
+function toggleHistCompare() {
+  histCompareMode = !histCompareMode;
+  const btn = document.getElementById('hist-compare-btn');
+  btn.style.background = histCompareMode ? 'var(--navy)' : 'var(--white)';
+  btn.style.color = histCompareMode ? '#fff' : 'var(--navy)';
+  btn.textContent = histCompareMode ? '✕ Ver por equipo individual' : '📊 Ver comparación de todas las líneas';
+  document.getElementById('hist-team-chips').style.opacity = histCompareMode ? '0.3' : '1';
+  document.getElementById('hist-team-chips').style.pointerEvents = histCompareMode ? 'none' : 'auto';
+  document.getElementById('hist-table').closest('div').style.display = histCompareMode ? 'none' : '';
+  document.getElementById('hist-team-pill').textContent = histCompareMode ? 'Todos los equipos' : (BASE_TEAMS.find(t=>t.id===histTeamId)?.name||'');
+  renderHistorico();
+}
+
+function renderHistorico() {
+  const t = BASE_TEAMS.find(x => x.id === histTeamId) || BASE_TEAMS[0];
+  histTeamId = t.id;
+  const chipsEl = document.getElementById('hist-team-chips');
+  chipsEl.innerHTML = BASE_TEAMS.map(tm => {
+    const isActive = tm.id === histTeamId;
+    return `<button onclick="histTeamId=${tm.id};renderHistorico()" style="width:130px;padding:5px 8px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;border:1.5px solid ${isActive?'var(--navy)':'var(--border)'};background:${isActive?'var(--navy)':'var(--white)'};color:${isActive?'#fff':'var(--t2)'};font-family:'Barlow',sans-serif;text-align:left;box-sizing:border-box"><span style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${tm.name}</span><span style="font-size:8px;font-weight:400;opacity:.8;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${tm.line}</span></button>`;
+  }).join('');
+
+  const cfg = HIST_INDS[histInd];
+  const meses = (activeMonths.length ? [...activeMonths] : Array.from({length:12},(_,i)=>i)).map(Number).sort((a,b)=>a-b);
+
+  document.getElementById('hist-chart-title').textContent = cfg.label + (histCompareMode ? ' — Todos los equipos' : ' — ' + t.name);
+  document.getElementById('hist-meta-legend').innerHTML = '';
+
+  const svg = document.getElementById('hist-svg');
+  const W = (svg.parentElement.offsetWidth||800) - 40, H = histCompareMode ? 260 : 220;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.setAttribute('width',W); svg.setAttribute('height',H); svg.innerHTML='';
+
+  const PAD={top:20,right:histCompareMode?20:20,bottom:36,left:46}, cW=W-PAD.left-PAD.right, cH=H-PAD.top-PAD.bottom;
+  const mk=(tag,attrs={})=>{ const el=document.createElementNS('http://www.w3.org/2000/svg',tag); Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v)); return el; };
+
+  if (histCompareMode) {
+    const teamVals = BASE_TEAMS.map(t=>({t,vals:meses.map(m=>getHistValue(m,t.id,histInd))}));
+    const allV = teamVals.flatMap(tv=>tv.vals.filter(v=>v!==null));
+    if (!allV.length) { const tx=mk('text',{x:W/2,y:H/2,'text-anchor':'middle',fill:'#aaa','font-size':'13'}); tx.textContent='Sin datos'; svg.appendChild(tx); return; }
+    const minV=Math.min(...allV)*0.92, maxV=Math.max(...allV)*1.08||10;
+    const xS=i=>PAD.left+(i/(Math.max(meses.length-1,1)))*cW, yS=v=>PAD.top+cH-((v-minV)/((maxV-minV)||1))*cH;
+    for(let i=0;i<=4;i++){ const y=PAD.top+(cH/4)*i, val=maxV-(maxV-minV)/4*i; svg.appendChild(mk('line',{x1:PAD.left,y1:y,x2:PAD.left+cW,y2:y,stroke:'#e8ecf4','stroke-width':1})); const lbl=mk('text',{x:PAD.left-4,y:y+4,'text-anchor':'end','font-size':'9',fill:'#aaa'}); lbl.textContent=val.toFixed(0); svg.appendChild(lbl); }
+    teamVals.forEach(({t,vals},ti)=>{ const color=HIST_COLORS[ti%HIST_COLORS.length]; const pts=meses.map((m,i)=>vals[i]!==null?{i,v:vals[i]}:null).filter(Boolean); if(pts.length<1)return; if(pts.length>=2){const d=pts.map((p,k)=>`${k===0?'M':'L'}${xS(p.i).toFixed(1)},${yS(p.v).toFixed(1)}`).join(' '); svg.appendChild(mk('path',{d,stroke:color,'stroke-width':'1.8',fill:'none','stroke-linejoin':'round','stroke-opacity':'0.85'}));} const last=pts[pts.length-1]; svg.appendChild(mk('circle',{cx:xS(last.i),cy:yS(last.v),r:3,fill:color,stroke:'#fff','stroke-width':'1.5'})); });
+    meses.forEach((m,i)=>{ const lbl=mk('text',{x:xS(i),y:H-6,'text-anchor':'middle','font-size':'9',fill:'#888'}); lbl.textContent=MONTHS_S[m]; svg.appendChild(lbl); });
+    let legend=document.getElementById('hist-all-legend');
+    if(!legend){legend=document.createElement('div');legend.id='hist-all-legend';svg.parentElement.appendChild(legend);}
+    legend.style.cssText='display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:4px 10px;margin-top:8px;padding:0 4px';
+    legend.innerHTML=BASE_TEAMS.map((t,ti)=>`<div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2)"><span style="width:14px;height:3px;background:${HIST_COLORS[ti%HIST_COLORS.length]};border-radius:2px;flex-shrink:0;display:inline-block"></span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.name}</span></div>`).join('');
+  } else {
+    const oldLegend=document.getElementById('hist-all-legend'); if(oldLegend) oldLegend.remove();
+    const vals=meses.map(m=>getHistValue(m,histTeamId,histInd));
+    const withData=meses.map((m,i)=>({m,v:vals[i]})).filter(x=>x.v!==null);
+    if(!withData.length){const tx=mk('text',{x:W/2,y:H/2,'text-anchor':'middle',fill:'#aaa','font-size':'13'});tx.textContent='Sin datos para este equipo';svg.appendChild(tx);}
+    else{
+      const allV2=withData.map(x=>x.v), minV=Math.min(...allV2)*0.92, maxV=Math.max(...allV2)*1.08||10;
+      const xS=i=>PAD.left+(i/(meses.length-1||1))*cW, yS=v=>PAD.top+cH-((v-minV)/((maxV-minV)||1))*cH;
+      for(let i=0;i<=4;i++){const y=PAD.top+(cH/4)*i,val=maxV-(maxV-minV)/4*i;svg.appendChild(mk('line',{x1:PAD.left,y1:y,x2:PAD.left+cW,y2:y,stroke:'#e8ecf4','stroke-width':1}));const lbl=mk('text',{x:PAD.left-4,y:y+4,'text-anchor':'end','font-size':'9',fill:'#aaa'});lbl.textContent=val.toFixed(val<10?1:0);svg.appendChild(lbl);}
+      const linePath=withData.map((x,i)=>{const xi=meses.indexOf(x.m);return`${i===0?'M':'L'}${xS(xi).toFixed(1)},${yS(x.v).toFixed(1)}`;}).join(' ');
+      svg.appendChild(mk('path',{d:linePath,stroke:cfg.color,'stroke-width':'2.5',fill:'none','stroke-linejoin':'round'}));
+      withData.forEach(x=>{const xi=meses.indexOf(x.m),cx=xS(xi),cy=yS(x.v);svg.appendChild(mk('circle',{cx,cy,r:4,fill:cfg.color,stroke:'#fff','stroke-width':'2'}));const lbl=mk('text',{x:cx,y:cy-9,'text-anchor':'middle','font-size':'9','font-weight':'700',fill:cfg.color});lbl.textContent=x.v.toFixed(x.v<10?1:0)+(cfg.unit==='%'?'%':'');svg.appendChild(lbl);});
+      meses.forEach((m,i)=>{const lbl=mk('text',{x:xS(i),y:H-6,'text-anchor':'middle','font-size':'9',fill:'#888'});lbl.textContent=MONTHS_S[m];svg.appendChild(lbl);});
+    }
+    // tabla
+    const tbl=document.getElementById('hist-table');
+    const mesH=meses.map(m=>`<th>${MONTHS_S[m]}</th>`).join('');
+    let html=`<thead><tr><th style="text-align:left;min-width:110px">Indicador</th>${mesH}<th>Promedio</th></tr></thead><tbody>`;
+    const valCells=meses.map((m,i)=>{const v=vals[i];if(v===null)return`<td style="color:#ccc">—</td>`;return`<td>${v.toFixed(v<10?1:0)}${cfg.unit==='%'?'%':''}</td>`;}).join('');
+    const validVals=vals.filter(v=>v!==null), avgVal=validVals.length?(validVals.reduce((a,b)=>a+b,0)/validVals.length):null;
+    html+=`<tr><td>Valor real</td>${valCells}<td>${avgVal!==null?avgVal.toFixed(1)+(cfg.unit==='%'?'%':''):'—'}</td></tr>`;
+    html+='</tbody>'; tbl.innerHTML=html;
+  }
+}
+
+// ═══════════════════════════════════════
+// PREMIACIÓN
+// ═══════════════════════════════════════
+function renderPremiacion() {
+  const el = document.getElementById('premiacion-content');
+  if (!el) return;
+  const mesesConDatos = Object.keys(monthData).map(Number).filter(m=>monthData[m]&&Object.keys(monthData[m]).length>0).sort((a,b)=>a-b);
+  const filtMeses = (window.premMeses&&window.premMeses.length) ? window.premMeses : mesesConDatos;
+  const cumRows = BASE_TEAMS.map(t => {
+    let cumTotal=0; const monthly={};
+    filtMeses.forEach(m=>{ const s=getTeamMonthScore(t.id,m); if(s){monthly[m]=s.total;cumTotal+=s.total;} });
+    const n=filtMeses.filter(m=>monthly[m]!==undefined).length||1;
+    return {t,cumTotal:parseFloat(cumTotal.toFixed(1)),monthly,cumAvg:parseFloat((cumTotal/n).toFixed(1))};
+  }).sort((a,b)=>b.cumTotal-a.cumTotal);
+  const meses=(window.premMeses&&window.premMeses.length)?window.premMeses.slice().sort((a,b)=>a-b):mesesConDatos;
+  const maxP=(meses.length||1)*95, top3=cumRows.slice(0,3);
+  if(!top3.length){el.innerHTML=`<div style="text-align:center;padding:60px;color:var(--t3)">Aún no hay datos registrados.</div>`;return;}
+  const cfg=[
+    {pos:1,medal:'🥇',label:'PRIMER PUESTO',grad:'linear-gradient(135deg,#f6d000,#ffb300)',border:'#f6d000',shadow:'rgba(246,208,0,.35)',numCol:'#7a5800',txtCol:'#3d2c00'},
+    {pos:2,medal:'🥈',label:'SEGUNDO PUESTO',grad:'linear-gradient(135deg,#b0bec5,#78909c)',border:'#90a4ae',shadow:'rgba(120,144,156,.3)',numCol:'#37474f',txtCol:'#263238'},
+    {pos:3,medal:'🥉',label:'TERCER PUESTO',grad:'linear-gradient(135deg,#d4845a,#bf6840)',border:'#bf6840',shadow:'rgba(191,104,64,.3)',numCol:'#6d3a1f',txtCol:'#4e2a12'},
+  ];
+  const colHeights={1:140,2:100,3:80};
+  const podioOrder=[top3[1]?{row:top3[1],cfg:cfg[1]}:null,top3[0]?{row:top3[0],cfg:cfg[0]}:null,top3[2]?{row:top3[2],cfg:cfg[2]}:null].filter(Boolean);
+
+  // Helper: promedio de un campo numérico sobre los meses filtrados
+  const avgField = (teamId, field) => {
+    const vals = meses.map(m => {
+      const d = monthData[m] && monthData[m][teamId];
+      return d ? (d[field] ?? null) : null;
+    }).filter(v => v !== null);
+    return vals.length ? parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1)) : null;
+  };
+
+  // Helper: barra de progreso con etiqueta
+  const progBar = (label, val, max, color, unit='%') => {
+    const pct = val !== null ? Math.min(100, (val/max)*100) : 0;
+    const display = val !== null ? `${val}${unit}` : '—';
+    return `<div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+        <span style="font-size:10px;font-weight:700;color:var(--t2)">${label}</span>
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:${color}">${display}</span>
+      </div>
+      <div style="height:7px;background:var(--border);border-radius:4px;overflow:hidden">
+        <div style="height:100%;border-radius:4px;background:${color};width:${pct}%;transition:width .6s ease"></div>
+      </div>
+    </div>`;
+  };
+
+  // Helper: mini gráfica de barras SVG para evolución mensual
+  const barChart = (monthly, meses, maxVal) => {
+    if (!meses.length) return '';
+    const W=280, H=70, PAD={l:6,r:6,t:18,b:18};
+    const bw = Math.max(14, Math.floor((W-PAD.l-PAD.r)/meses.length) - 4);
+    const cH = H - PAD.t - PAD.b;
+    let bars = '', labels = '', vals = '';
+    meses.forEach((m,i) => {
+      const v = monthly[m] ?? null;
+      const x = PAD.l + i*((W-PAD.l-PAD.r)/meses.length) + ((W-PAD.l-PAD.r)/meses.length - bw)/2;
+      const barH = v !== null ? Math.max(3, (v/maxVal)*cH) : 0;
+      const y = PAD.t + cH - barH;
+      const col = v===null?'#ddd':v>=45?'#c8a800':v>=30?'#0033a0':'#8a96b4';
+      bars += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw}" height="${barH.toFixed(1)}" fill="${col}" rx="3"/>`;
+      vals += v!==null ? `<text x="${(x+bw/2).toFixed(1)}" y="${(y-3).toFixed(1)}" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="9" font-weight="700" fill="${col}">${v}</text>` : '';
+      labels += `<text x="${(x+bw/2).toFixed(1)}" y="${H-3}" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="9" fill="#8a96b4">${MONTHS_S[m]}</text>`;
+    });
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">${bars}${vals}${labels}</svg>`;
+  };
+
+  el.innerHTML=`
+    <div style="margin:28px 0 0">
+      <!-- TÍTULO -->
+      <div style="text-align:center;margin-bottom:28px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--t3);letter-spacing:2px;text-transform:uppercase">Mundial Somos Super 2026</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;color:var(--navy);line-height:1.1">🏆 TABLA DE PREMIACIÓN</div>
+        <div style="font-size:12px;color:var(--t3);margin-top:4px">${meses.length?'Acumulado '+MONTHS_S[meses[0]]+(meses.length>1?' – '+MONTHS_S[meses[meses.length-1]]:''):''} 2026 · ${meses.length} mes${meses.length!==1?'es':''}</div>
+      </div>
+
+      <!-- PODIO -->
+      <div style="display:flex;align-items:flex-end;justify-content:center;gap:0;max-width:680px;margin:0 auto 36px">
+        ${podioOrder.map(({row,cfg:c})=>{
+          const h=colHeights[c.pos], ac=avatarColor(row.t.name), pct=Math.min(100,(row.cumTotal/maxP)*100);
+          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center">
+            <div style="text-align:center;margin-bottom:8px;padding:0 6px">
+              <div style="width:52px;height:52px;border-radius:50%;background:${ac};display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:#fff;margin:0 auto 6px;border:3px solid ${c.border};box-shadow:0 4px 14px ${c.shadow}">${ini(row.t.name)}</div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--navy);line-height:1.2">${row.t.name}</div>
+              ${row.t.lider     ? `<div style="font-size:8.5px;color:var(--t2)">👤 ${row.t.lider}</div>`     : ''}
+              ${row.t.asistente ? `<div style="font-size:8.5px;color:var(--t2)">🏥 ${row.t.asistente}</div>` : ''}
+              ${row.t.medico    ? `<div style="font-size:8.5px;color:var(--t2)">🔧 ${row.t.medico}</div>`    : ''}
+              ${row.t.mentor    ? `<div style="font-size:8.5px;color:var(--t2)">🎓 ${row.t.mentor}</div>`    : ''}
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:${c.numCol};margin-top:4px">${row.cumTotal} <span style="font-size:11px;font-weight:600">pts</span></div>
+            </div>
+            <div style="width:100%;height:${h}px;background:${c.grad};border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:center;box-shadow:0 -4px 20px ${c.shadow}">
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:900;color:rgba(255,255,255,.9)">${c.pos}</span>
+            </div>
+            <div style="width:100%;height:8px;background:${c.border};opacity:.6"></div>
+          </div>`;
+        }).join('')}
+      </div>
+
+      <!-- DETALLE GANADORES -->
+      <div style="margin-top:8px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--border)">📋 Detalle de los equipos ganadores</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px">
+          ${top3.map((row,idx)=>{
+            const c=cfg[idx], ac=avatarColor(row.t.name), pct=Math.min(100,(row.cumTotal/maxP)*100);
+            const avgOee = avgField(row.t.id,'oee');
+            const avgTon = avgField(row.t.id,'ton');
+            const avgPnc = avgField(row.t.id,'pnc');
+            const maxBar = Math.max(...meses.map(m=>row.monthly[m]??0), 1);
+
+            return `<div style="background:var(--white);border:2px solid ${c.border};border-radius:16px;overflow:hidden;box-shadow:0 4px 20px ${c.shadow}">
+
+              <!-- HEADER -->
+              <div style="background:${c.grad};padding:16px 18px">
+                <div style="display:flex;align-items:flex-start;gap:10px">
+                  <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#fff;flex-shrink:0">${ini(row.t.name)}</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:10px;font-weight:700;color:${c.txtCol};opacity:.8;letter-spacing:.5px">${c.medal} ${c.label}</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:${c.txtCol};line-height:1.2">${row.t.name}</div>
+                    ${row.t.lider     ? `<div style="font-size:9px;color:${c.txtCol};opacity:.8;margin-top:1px">👤 ${row.t.lider}</div>`     : ''}
+                    ${row.t.asistente ? `<div style="font-size:9px;color:${c.txtCol};opacity:.75">🏥 ${row.t.asistente}</div>` : ''}
+                    ${row.t.medico    ? `<div style="font-size:9px;color:${c.txtCol};opacity:.75">🔧 ${row.t.medico}</div>`    : ''}
+                    ${row.t.mentor    ? `<div style="font-size:9px;color:${c.txtCol};opacity:.7">🎓 ${row.t.mentor}</div>`    : ''}
+                  </div>
+                  <div style="text-align:right;flex-shrink:0">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;color:${c.txtCol};line-height:1">${row.cumTotal}</div>
+                    <div style="font-size:9px;color:${c.txtCol};opacity:.7">pts acum.</div>
+                    <div style="font-size:9px;color:${c.txtCol};opacity:.6">prom ${row.cumAvg}/mes</div>
+                  </div>
+                </div>
+                <!-- Barra progreso acumulado -->
+                <div style="margin-top:10px;height:5px;background:rgba(255,255,255,.3);border-radius:3px">
+                  <div style="height:100%;border-radius:3px;background:rgba(255,255,255,.8);width:${pct}%"></div>
+                </div>
+                <div style="font-size:9px;color:${c.txtCol};opacity:.6;text-align:right;margin-top:2px">${pct.toFixed(0)}% del máximo posible</div>
+              </div>
+
+              <!-- INDICADORES PROMEDIO (barras de progreso) -->
+              <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
+                <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📊 Promedio de indicadores</div>
+                ${progBar('⚡ OEE / Eficiencia', avgOee, 100, '#0033a0')}
+                ${progBar('📦 Toneladas (% cumpl.)', avgTon, 100, '#007934')}
+                ${progBar('⚖️ PNC', avgPnc, 10, '#6a1fa0')}
+              </div>
+
+              <!-- EVOLUCIÓN MENSUAL — gráfica de barras -->
+              <div style="padding:14px 16px">
+                <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📅 Evolución mensual (pts totales)</div>
+                ${barChart(row.monthly, meses, Math.max(...Object.values(row.monthly).filter(v=>v!=null), 1))}
+                <!-- Leyenda colores -->
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;justify-content:center">
+                  <span style="font-size:8.5px;color:var(--t3);display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;background:#c8a800;border-radius:2px;display:inline-block"></span>≥45 pts</span>
+                  <span style="font-size:8.5px;color:var(--t3);display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;background:#0033a0;border-radius:2px;display:inline-block"></span>30–44 pts</span>
+                  <span style="font-size:8.5px;color:var(--t3);display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;background:#8a96b4;border-radius:2px;display:inline-block"></span>&lt;30 pts</span>
+                </div>
+              </div>
+
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function initPremChips() {
+  const wrap = document.getElementById('prem-chips');
+  if (!wrap) return;
+  const mesesConDatos = Object.keys(monthData).map(Number).filter(m=>monthData[m]&&Object.keys(monthData[m]).length>0).sort((a,b)=>a-b);
+  if (!window.premMeses) window.premMeses = mesesConDatos.slice();
+  window.premMeses = window.premMeses.filter(m=>mesesConDatos.includes(m));
+  if (!window.premMeses.length && mesesConDatos.length) window.premMeses = mesesConDatos.slice();
+  wrap.innerHTML = mesesConDatos.map(m=>{
+    const active=window.premMeses.includes(m);
+    return `<button id="prem-chip-${m}" onclick="togglePremChip(${m})" style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;cursor:pointer;transition:.15s;border:2px solid var(--navy);background:${active?'var(--navy)':'transparent'};color:${active?'#fff':'var(--navy)'}">${MONTHS_S[m]}</button>`;
+  }).join('');
+}
+
+function togglePremChip(m) {
+  if (!window.premMeses) window.premMeses = activeMonths.slice();
+  const idx=window.premMeses.indexOf(m);
+  if(idx>=0){if(window.premMeses.length===1)return;window.premMeses.splice(idx,1);}
+  else window.premMeses.push(m);
+  const btn=document.getElementById(`prem-chip-${m}`);
+  if(btn){const active=window.premMeses.includes(m);btn.style.background=active?'var(--navy)':'transparent';btn.style.color=active?'#fff':'var(--navy)';}
+  renderPremiacion();
+}
+
+function premSelAll() {
+  const mesesConDatos=Object.keys(monthData).map(Number).filter(m=>monthData[m]&&Object.keys(monthData[m]).length>0).sort((a,b)=>a-b);
+  window.premMeses=mesesConDatos.slice(); initPremChips(); renderPremiacion();
+}
+function premSelNone() {
+  window.premMeses=activeMonths.length?[activeMonths[0]]:[];
+  initPremChips(); renderPremiacion();
+}
+
+// ═══════════════════════════════════════
+// CUERPO TÉCNICO — Vista compartida
+// ═══════════════════════════════════════
+function setTecnicoView(view) {
+  liderView=view; asistenteView=view; medicoView=view;
+  const btnMes=document.getElementById('lider-btn-mes'), btnAcum=document.getElementById('lider-btn-acum');
+  if(btnMes){btnMes.style.background=view==='mes'?'var(--navy)':'var(--white)';btnMes.style.color=view==='mes'?'#fff':'var(--navy)';}
+  if(btnAcum){btnAcum.style.background=view==='acumulado'?'var(--navy)':'var(--white)';btnAcum.style.color=view==='acumulado'?'#fff':'var(--navy)';}
+  const chipsEl=document.getElementById('lider-month-chips');
+  if(chipsEl){
+    chipsEl.style.display=view==='mes'?'flex':'none';
+    if(view==='mes') chipsEl.innerHTML=activeMonths.slice().sort((a,b)=>a-b).filter(m=>m<=LAST_EDITABLE_M).map(m=>{
+      const active=m===liderMonth;
+      return `<button onclick="setTecnicoMonth(${m})" style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;border:1.5px solid ${active?'var(--navy)':'var(--border)'};background:${active?'var(--navy)':'var(--white)'};color:${active?'#fff':'var(--t2)'}; transition:.12s">${MONTHS_S[m]}</button>`;
+    }).join('');
+  }
+  const pill=document.getElementById('lider-month-pill');
+  if(pill) pill.textContent=view==='acumulado'?'Acumulado 2026':MONTHS_F[liderMonth]+' '+NOW.getFullYear();
+  renderPersonRanking('lider'); renderPersonRanking('asistente'); renderPersonRanking('medico');
+}
+
+function setTecnicoMonth(m) {
+  liderMonth=m; asistenteMonth=m; medicoMonth=m; setTecnicoView('mes');
+}
+
+// ═══════════════════════════════════════
+// PERSISTENCE
+// ═══════════════════════════════════════
+const LS = {DATA:'tpm2026_monthData',TEAMS:'tpm2026_teams',METAS:'tpm2026_metas',MONTHS:'tpm2026_activeMonths'};
+
+function saveAll(){
+  try{
+    localStorage.setItem(LS.DATA,  JSON.stringify(monthData));
+    localStorage.setItem(LS.TEAMS, JSON.stringify(BASE_TEAMS.map(t=>({id:t.id,name:t.name,line:t.line,lider:t.lider||'',asistente:t.asistente||'',medico:t.medico||'',mentor:t.mentor||''}))));
+    localStorage.setItem(LS.METAS, JSON.stringify(metas));
+    localStorage.setItem(LS.MONTHS,JSON.stringify(activeMonths));
+    const ind=document.getElementById('save-ind');
+    if(ind){ind.style.opacity='1';setTimeout(()=>ind.style.opacity='0',1800);}
+  }catch(e){console.warn('localStorage error:',e);}
+}
+
+function loadAll(){
+  try{
+    const savedTeams=localStorage.getItem(LS.TEAMS);
+    if(savedTeams){
+      const arr=JSON.parse(savedTeams);
+      arr.forEach(s=>{ const t=BASE_TEAMS.find(x=>x.id===s.id); if(t){t.name=s.name;t.line=s.line;t.lider=s.lider||'';t.asistente=s.asistente||'';t.medico=s.medico||'';t.mentor=s.mentor||'';} });
+      BASE_TEAMS.forEach(t=>{ if(t.asistente===undefined) t.asistente=''; if(t.medico===undefined) t.medico=''; });
+    }
+    const savedMetas=localStorage.getItem(LS.METAS);
+    if(savedMetas){
+      const raw=JSON.parse(savedMetas);
+      const numFields=['oeeBase','oeeMeta','pncBase','pncMeta','ton','pnc','mpr','des'];
+      const normMeta=(obj)=>{ if(!obj)return obj; const out={...obj}; numFields.forEach(k=>{if(out[k]===''||out[k]===undefined)out[k]=null;else if(out[k]!==null)out[k]=parseFloat(out[k]);}); return out; };
+      BASE_TEAMS.forEach(t=>{
+        const v=raw[t.id]||raw[String(t.id)];
+        if(v){
+          if(typeof v.ton==='number'){metas[t.id]={0:normMeta({ton:v.ton,pnc:v.pnc,oeeBase:null,oeeMeta:null,pncBase:null,pncMeta:null})};}
+          else{metas[t.id]={};Object.keys(v).forEach(k=>{const mi=parseInt(k);if(!isNaN(mi))metas[t.id][mi]=normMeta(v[k]);});}
+        } else { metas[t.id]={}; }
+      });
+    }
+    const savedData=localStorage.getItem(LS.DATA);
+    if(savedData){
+      const loaded=JSON.parse(savedData);
+      Object.keys(loaded).forEach(m=>{
+        const mi=parseInt(m); monthData[mi]={};
+        Object.keys(loaded[m]).forEach(tk=>{ const tki=parseInt(tk); if(!isNaN(tki)) monthData[mi][tki]=loaded[m][tk]; });
+        BASE_TEAMS.forEach((t,idx)=>{
+          if(!monthData[mi][t.id]) monthData[mi][t.id]=genResultData(idx,mi);
+          else{
+            if(!monthData[mi][t.id].desemp) monthData[mi][t.id].desemp=defaultDesemp();
+            else{const def=defaultDesemp();Object.keys(def).forEach(k=>{if(monthData[mi][t.id].desemp[k]===undefined)monthData[mi][t.id].desemp[k]=def[k];});}
+            if(monthData[mi][t.id].matriz!==undefined&&monthData[mi][t.id].desemp.matriz===undefined){monthData[mi][t.id].desemp.matriz=monthData[mi][t.id].matriz;delete monthData[mi][t.id].matriz;}
+            if(monthData[mi][t.id].desemp.experticia===undefined) monthData[mi][t.id].desemp.experticia=null;
+            if(monthData[mi][t.id].desemp.matriz===undefined) monthData[mi][t.id].desemp.matriz=null;
+          }
+        });
+      });
+    }
+    const savedMonths=localStorage.getItem(LS.MONTHS);
+    if(savedMonths) activeMonths=JSON.parse(savedMonths).map(Number);
+
+    // Normalizar claves a número
+    const mdRaw={...monthData}; monthData={};
+    Object.keys(mdRaw).forEach(mk=>{ const mi=parseInt(mk); if(isNaN(mi))return; monthData[mi]={}; Object.keys(mdRaw[mk]).forEach(tk=>{ const ti=parseInt(tk); if(!isNaN(ti)) monthData[mi][ti]=mdRaw[mk][tk]; }); });
+    const metasRaw={...metas}; metas={};
+    Object.keys(metasRaw).forEach(tk=>{ const ti=parseInt(tk); if(isNaN(ti))return; metas[ti]={}; Object.keys(metasRaw[tk]).forEach(mk=>{ const mi=parseInt(mk); if(!isNaN(mi)) metas[ti][mi]=metasRaw[tk][mk]; }); });
+
+    activeMonths=activeMonths.filter(m=>!!monthData[m]&&Object.keys(monthData[m]).length>0&&m<CUR_M);
+    if(!activeMonths.length) activeMonths=Object.keys(monthData).map(Number).filter(m=>Object.keys(monthData[m]).length>0&&m<CUR_M).sort((a,b)=>a-b);
+    if(!activeMonths.length) activeMonths=[CUR_M];
+  }catch(e){console.warn('localStorage load error:',e);}
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+try {
+  loadAll();
+  let startMonth = LAST_EDITABLE_M;
+  for(let m=LAST_EDITABLE_M;m>=0;m--){ if(monthData[m]&&Object.keys(monthData[m]).length>0){startMonth=m;break;} }
+  if(startMonth < 0 || startMonth >= CUR_M) startMonth = LAST_EDITABLE_M;
+  if(startMonth < 0) startMonth = 0;
+  initMonth(startMonth);
+  const mesesConDatos=Object.keys(monthData).map(Number).filter(m=>m<CUR_M&&monthData[m]&&Object.keys(monthData[m]).length>0).sort((a,b)=>a-b);
+  mesesConDatos.forEach(m=>{if(!activeMonths.includes(m)) activeMonths.push(m);});
+  activeMonths=activeMonths.filter(m=>m<CUR_M);
+  if(!activeMonths.length) activeMonths=[startMonth];
+  setMonth(startMonth);
+} catch(e) {
+  console.error('Error al inicializar:', e);
+  document.body.insertAdjacentHTML('afterbegin',`<div style="background:#c0392b;color:#fff;padding:16px 24px;font-family:sans-serif;font-size:14px;position:fixed;top:0;left:0;right:0;z-index:9999">❌ Error al cargar: <b>${e.message}</b></div>`);
+}
+</script>
+</body>
+</html>

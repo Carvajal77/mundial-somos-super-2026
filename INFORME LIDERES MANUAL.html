@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard OEE · Líderes Embolsado Manual · S19 vs S20</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1A237E;--navyMid:#283593;--navyL:#E8EAF6;
+  --magenta:#E91E8C;--magentaL:#FCE4EC;
+  --cyan:#00BCD4;--cyanL:#E0F7FA;
+  --yellow:#FFD600;--yellowL:#FFFDE7;
+  --green:#2E7D32;--greenL:#E8F5E9;--greenMid:#43A047;
+  --amber:#E65100;--amberL:#FFF3E0;--amberMid:#FB8C00;
+  --red:#B71C1C;--redL:#FFEBEE;--redMid:#E53935;
+  --gray:#F4F6FB;--grayLine:#E0E0E0;--dark:#1A1A2E;
+  --white:#fff;--textM:#555;--textL:#999;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#EEF0F8;color:var(--dark);font-size:13px}
+.page{max-width:1180px;margin:0 auto;padding:22px 18px}
+
+/* HEADER */
+.hdr{background:var(--navy);border-radius:14px;padding:22px 28px;margin-bottom:18px;position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.hdr::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.04)}
+.hdr::after{content:'';position:absolute;bottom:-40px;left:260px;width:160px;height:160px;border-radius:50%;background:rgba(233,30,140,.1)}
+.hdr-left{position:relative}
+.hdr-badge{background:var(--magenta);color:#fff;font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;letter-spacing:.07em;text-transform:uppercase;display:inline-block;margin-bottom:8px}
+.hdr h1{font-size:24px;font-weight:700;color:#fff;line-height:1.2}
+.hdr h1 span{color:var(--yellow)}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.55);margin-top:5px}
+.hdr-meta{display:flex;gap:16px;flex-wrap:wrap;position:relative}
+.hm-item{text-align:center;background:rgba(255,255,255,.07);border-radius:8px;padding:8px 14px}
+.hm-val{font-size:20px;font-weight:700;color:var(--yellow)}
+.hm-lbl{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+
+/* VEREDICTO BANNER */
+.veredicto{border-radius:12px;padding:16px 22px;margin-bottom:18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.v-mejoro{background:linear-gradient(135deg,#E8F5E9,#F1F8E9);border:1.5px solid var(--greenMid)}
+.v-igual{background:linear-gradient(135deg,#FFF3E0,#FFF8E1);border:1.5px solid var(--amberMid)}
+.v-bajo{background:linear-gradient(135deg,#FFEBEE,#FFF3E0);border:1.5px solid var(--redMid)}
+.v-icon{font-size:32px;flex-shrink:0}
+.v-title{font-size:16px;font-weight:700}
+.v-text{font-size:12px;color:var(--textM);margin-top:3px;line-height:1.5}
+.vt-g{color:var(--green)} .vt-a{color:var(--amber)} .vt-r{color:var(--red)}
+
+/* METRICS */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.mc{background:#fff;border-radius:10px;padding:14px 16px;border:0.5px solid var(--grayLine);border-top:3px solid}
+.mc-b{border-top-color:var(--navy)} .mc-g{border-top-color:var(--greenMid)} .mc-a{border-top-color:var(--amberMid)} .mc-r{border-top-color:var(--redMid)}
+.mc-lbl{font-size:10px;font-weight:700;color:var(--textM);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.mc-val{font-size:24px;font-weight:700;color:var(--dark)}
+.mc-sub{font-size:11px;margin-top:4px;font-weight:600}
+.sc-g{color:var(--green)} .sc-a{color:var(--amber)} .sc-r{color:var(--red)} .sc-b{color:#1565C0}
+
+/* CAT CARDS */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.cat{background:#fff;border-radius:10px;padding:14px 16px;border:0.5px solid var(--grayLine)}
+.cat-title{font-size:10px;font-weight:700;color:var(--textM);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.cat-vals{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cat-vitem{text-align:center}
+.cat-wk{font-size:10px;color:var(--textL)}
+.cat-v{font-size:20px;font-weight:700;color:var(--dark)}
+.cat-sep{font-size:18px;color:var(--grayLine)}
+.cat-diff{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px}
+.cd-up{background:var(--greenL);color:var(--green)} .cd-dn{background:var(--redL);color:var(--red)} .cd-eq{background:var(--gray);color:var(--textM)}
+.bar-t{height:7px;background:var(--gray);border-radius:4px;overflow:hidden;margin-top:6px}
+.bar-f{height:100%;border-radius:4px}
+.bf-g{background:var(--greenMid)} .bf-a{background:var(--amberMid)} .bf-r{background:var(--redMid)}
+.cat-note{font-size:10px;margin-top:5px;font-weight:600}
+.cn-g{color:var(--green)} .cn-r{color:var(--red)} .cn-a{color:var(--amber)}
+
+/* SECTION */
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sh h2{font-size:13px;font-weight:700;color:var(--dark);white-space:nowrap}
+.sh-line{flex:1;height:0.5px;background:var(--grayLine)}
+
+/* TABLE */
+.tcard{background:#fff;border-radius:10px;border:0.5px solid var(--grayLine);overflow:hidden;margin-bottom:16px}
+.tscroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+thead tr{background:var(--navy)}
+th{padding:9px 9px;font-size:10px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;text-align:left}
+td{padding:8px 9px;border-bottom:0.5px solid var(--grayLine);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#FAFBFF}
+.lname{font-weight:600;font-size:11.5px;color:var(--dark);min-width:155px}
+.pill{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;white-space:nowrap}
+.p-g{background:var(--greenL);color:var(--green)}
+.p-a{background:var(--amberL);color:var(--amber)}
+.p-r{background:var(--redL);color:var(--red)}
+.p-gr{background:var(--gray);color:var(--textL)}
+.tend-up{color:var(--green);font-weight:700} .tend-dn{color:var(--red);font-weight:700} .tend-eq{color:var(--textM)}
+.np{color:var(--textL);font-size:10px;font-style:italic}
+
+/* BOTTOM */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.panel{background:#fff;border-radius:10px;border:0.5px solid var(--grayLine);padding:14px 16px}
+.p-title{font-size:10px;font-weight:700;color:var(--textM);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+
+/* RANKING */
+.ri{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--grayLine)}
+.ri:last-child{border-bottom:none}
+.rnum{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.rn1{background:#FFD600;color:#1A1A2E} .rn2{background:#C0C0C0;color:#1A1A2E} .rn3{background:#CD7F32;color:#fff} .rnn{background:var(--gray);color:var(--textM)}
+.rname{flex:1;font-size:11.5px;font-weight:600;color:var(--dark)}
+.rbar{height:4px;border-radius:2px;margin-top:3px}
+.roee{font-size:13px;font-weight:800}
+.ro-g{color:var(--green)} .ro-a{color:var(--amber)} .ro-r{color:var(--red)}
+
+/* ALERTS */
+.ai{border-radius:8px;padding:9px 12px;margin-bottom:7px;border-left:3px solid}
+.ai:last-child{margin-bottom:0}
+.ai-g{background:var(--greenL);border-color:var(--greenMid)}
+.ai-a{background:var(--amberL);border-color:var(--amberMid)}
+.ai-r{background:var(--redL);border-color:var(--redMid)}
+.ai-b{background:var(--navyL);border-color:var(--navy)}
+.at{font-size:11px;font-weight:700;color:var(--dark);margin-bottom:2px}
+.ax{font-size:10px;color:var(--textM);line-height:1.45}
+
+/* CONCLUSIONS */
+.cc{background:#fff;border-radius:10px;border:0.5px solid var(--grayLine);padding:16px 18px;margin-bottom:16px}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ci{display:flex;gap:10px;padding:10px 12px;border-radius:8px;align-items:flex-start}
+.ci-r{background:var(--redL)} .ci-g{background:var(--greenL)} .ci-a{background:var(--amberL)} .ci-b{background:var(--navyL)}
+.cicon{font-size:15px;flex-shrink:0;margin-top:1px}
+.ctext{font-size:11px;line-height:1.65;color:var(--dark)}
+.ctext strong{font-weight:700}
+
+/* FOOTER */
+.ftr{text-align:center;padding:14px;font-size:10px;color:var(--textL)}
+
+@media(max-width:900px){
+  .grid4,.grid3{grid-template-columns:repeat(2,1fr)}
+  .grid2,.cg{grid-template-columns:1fr}
+}
+@media(max-width:560px){.grid4{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-badge">Dashboard de Eficiencia OEE · Datos actualizados</div>
+      <h1>Líderes de <span>Embolsado Manual</span></h1>
+      <div class="hdr-sub">Comparativo semana 19 vs semana 20 · 2026 · Centro Productivo Bianchi</div>
+    </div>
+    <div class="hdr-meta">
+      <div class="hm-item"><div class="hm-val">19</div><div class="hm-lbl">Líderes</div></div>
+      <div class="hm-item"><div class="hm-val">54,6%</div><div class="hm-lbl">OEE Prom S19</div></div>
+      <div class="hm-item"><div class="hm-val">54,2%</div><div class="hm-lbl">OEE Prom S20</div></div>
+      <div class="hm-item"><div class="hm-val">≥65%</div><div class="hm-lbl">Meta OEE</div></div>
+    </div>
+  </div>
+<div>
+      <div class="v-title vt-a">En general: el grupo NO mejoró entre semana 19 y semana 20</div>
+      <div class="v-text">El OEE promedio bajó -0,4 pp (54,6% → 54,2%). Aunque 10 de 17 líderes comparables mejoraron individualmente, las caídas de líderes que venían con OEE alto (Nicoley Vélez -27,9 pp, Viviana Lara -30,9 pp) compensaron las ganancias del grupo. El rendimiento sigue siendo la categoría más crítica con -7,9 pp entre semanas. La disponibilidad es el único indicador con mejora real (+5,0 pp).</div>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div class="grid4">
+    <div class="mc mc-b">
+      <div class="mc-lbl">Líderes programadas S20</div>
+      <div class="mc-val">19</div>
+      <div class="mc-sub sc-b">Todas con datos en S20</div>
+    </div>
+    <div class="mc mc-a">
+      <div class="mc-lbl">OEE promedio S20</div>
+      <div class="mc-val">54,2%</div>
+      <div class="mc-sub sc-r">▼ −0,4 pp vs S19 · Meta: 65%</div>
+    </div>
+    <div class="mc mc-g">
+      <div class="mc-lbl">Líderes en meta S20</div>
+      <div class="mc-val">4</div>
+      <div class="mc-sub sc-g">OEE ≥ 65% · 21% del grupo</div>
+    </div>
+    <div class="mc mc-r">
+      <div class="mc-lbl">Líderes OEE crítico S20</div>
+      <div class="mc-val">8</div>
+      <div class="mc-sub sc-r">OEE &lt; 50% · requieren plan</div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="sh"><h2>Resumen por categoría</h2><div class="sh-line"></div></div>
+  <div class="grid3">
+    <div class="cat">
+      <div class="cat-title">Disponibilidad <span class="cat-diff cd-up">▲ +5,0 pp</span></div>
+      <div class="cat-vals">
+        <div class="cat-vitem"><div class="cat-wk">S19</div><div class="cat-v">64,8%</div></div>
+        <div class="cat-sep">→</div>
+        <div class="cat-vitem"><div class="cat-wk">S20</div><div class="cat-v">69,8%</div></div>
+      </div>
+      <div class="bar-t"><div class="bar-f bf-a" style="width:70%"></div></div>
+      <div class="cat-note cn-a">Único indicador con mejora real · Pero sigue limitando el OEE</div>
+    </div>
+    <div class="cat">
+      <div class="cat-title">Rendimiento <span class="cat-diff cd-dn">▼ −7,9 pp</span></div>
+      <div class="cat-vals">
+        <div class="cat-vitem"><div class="cat-wk">S19</div><div class="cat-v">83,5%</div></div>
+        <div class="cat-sep">→</div>
+        <div class="cat-vitem"><div class="cat-wk">S20</div><div class="cat-v">75,6%</div></div>
+      </div>
+      <div class="bar-t"><div class="bar-f bf-r" style="width:76%"></div></div>
+      <div class="cat-note cn-r">Categoría más crítica · Mayor caída entre semanas</div>
+    </div>
+    <div class="cat">
+      <div class="cat-title">Calidad <span class="cat-diff cd-eq">= Sin variación</span></div>
+      <div class="cat-vals">
+        <div class="cat-vitem"><div class="cat-wk">S19</div><div class="cat-v">100%</div></div>
+        <div class="cat-sep">→</div>
+        <div class="cat-vitem"><div class="cat-wk">S20</div><div class="cat-v">100%</div></div>
+      </div>
+      <div class="bar-t"><div class="bar-f bf-g" style="width:100%"></div></div>
+      <div class="cat-note cn-g">Fortaleza sostenida · 100% en ambas semanas</div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="sh"><h2>Evolución individual · S19 vs S20</h2><div class="sh-line"></div></div>
+  <div class="tcard">
+    <div class="tscroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Líder</th>
+            <th>OEE S19</th><th>OEE S20</th><th>Tendencia</th>
+            <th>Disp S19</th><th>Disp S20</th>
+            <th>Rend S19</th><th>Rend S20</th>
+            <th>Cal S19</th><th>Cal S20</th>
+            <th>Estado S20</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="grid2">
+    <div class="panel">
+      <div class="p-title">Ranking · Mejor OEE semana 20</div>
+      <div id="ranking"></div>
+    </div>
+    <div class="panel">
+      <div class="p-title">Alertas y seguimiento</div>
+      <div id="alertas"></div>
+    </div>
+  </div>
+
+  <!-- CONCLUSIONS -->
+  <div class="sh"><h2>Conclusiones · S19 vs S20</h2><div class="sh-line"></div></div>
+  <div class="cc">
+    <div class="cg" id="conclusiones"></div>
+  </div>
+
+  <!-- CONCLUSIONES FINALES NARRATIVAS -->
+  <div class="sh"><h2>Conclusion final · ¿Mejoro el grupo tras el taller de Orientacion a Resultados?</h2><div class="sh-line"></div></div>
+  <div style="background:#fff;border-radius:12px;border:0.5px solid #E0E0E0;padding:22px 24px;margin-bottom:16px">
+
+    <div style="background:linear-gradient(135deg,#FFF3E0,#FFF8E1);border:1.5px solid #FB8C00;border-radius:10px;padding:16px 20px;margin-bottom:18px;display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:28px;flex-shrink:0">📊</div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#E65100;margin-bottom:5px">En general: el grupo NO mejoro entre semana 19 y semana 20</div>
+        <div style="font-size:12px;color:#555;line-height:1.7">El OEE promedio bajo <strong>-0,4 pp</strong> (54,6% a 54,2%). Aunque <strong>10 de 17 lideres comparables si mejoraron individualmente</strong>, las caidas fuertes de Viviana Lara (-30,9 pp) y Nicoley Velez (-27,9 pp) compensaron esas ganancias y arrastraron el promedio hacia abajo.</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px">
+      <div style="background:#E8F5E9;border-radius:8px;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:#2E7D32;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Lo que mejoro</div>
+        <div style="font-size:12px;color:#1A1A2E;line-height:1.8">
+          <div style="margin-bottom:6px">📈 <strong>Disponibilidad +5,0 pp</strong> — unico indicador con avance real. Sugiere mejor organizacion del inicio de turno, coherente con el taller.</div>
+          <div style="margin-bottom:6px">🏆 <strong>Paola Cano: 96,2%</strong> — OEE mas alto del grupo, referente a destacar.</div>
+          <div>🚀 <strong>Ana Karina Orozco: +37,1 pp</strong> — paso de 34,5% a 71,6%, superando la meta.</div>
+        </div>
+      </div>
+      <div style="background:#FFEBEE;border-radius:8px;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:#B71C1C;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Lo que empeoro</div>
+        <div style="font-size:12px;color:#1A1A2E;line-height:1.8">
+          <div style="margin-bottom:6px">📉 <strong>Rendimiento -7,9 pp</strong> — categoria mas critica. Responde mas a factores operativos de linea que al liderazgo directo.</div>
+          <div style="margin-bottom:6px">🔴 <strong>Viviana Lara -30,9 pp</strong> y <strong>Nicoley Velez -27,9 pp</strong> — caidas que impactan el promedio del grupo.</div>
+          <div>🔴 <strong>8 lideres con OEE critico</strong> (menos del 50%) requieren plan de mejora urgente.</div>
+        </div>
+      </div>
+      <div style="background:#E8EAF6;border-radius:8px;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:#1A237E;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Lo que se sostuvo</div>
+        <div style="font-size:12px;color:#1A1A2E;line-height:1.8">
+          <div style="margin-bottom:6px">✅ <strong>Calidad 100%</strong> en todas las lideres, en ambas semanas. Fortaleza que no se debe perder.</div>
+          <div style="margin-bottom:6px">📌 <strong>Leidy Gomez, Luisa Lopez y Ana Karina</strong> mantienen OEE por encima o cerca de la meta en S20.</div>
+          <div>🎯 El grupo <strong>no retrocedio en calidad</strong>, lo que refleja disciplina operativa sostenida.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#E8EAF6;border:1.5px solid #1A237E;border-radius:10px;padding:16px 20px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:700;color:#1A237E;margin-bottom:8px">¿Podemos atribuir estos resultados al taller de Orientacion a Resultados?</div>
+      <div style="font-size:12px;color:#1A1A2E;line-height:1.85">
+        <strong>Aun es temprano para una lectura definitiva</strong> — solo ha pasado una semana desde el taller. Los indicadores de liderazgo no impactan el OEE de forma inmediata; su efecto se ve en la consistencia a lo largo del tiempo.<br><br>
+        Sin embargo, hay <strong>una senal positiva concreta</strong>: la disponibilidad mejoro +5,0 pp, lo que sugiere que las lideres estan siendo mas consistentes en el arranque y organizacion del turno — comportamiento directamente trabajado en el taller (check-in de inicio de turno, las 3 preguntas del resultado).<br><br>
+        La caida en rendimiento responde principalmente a <strong>variables operativas de linea</strong> (dotacion, velocidad de maquina, ausentismo de colaboradoras) que estan fuera del control directo de la lider.<br><br>
+        <strong>Recomendacion:</strong> hacer el seguimiento en S21 y S22. Si la disponibilidad continua mejorando y el OEE individual de las lideres que si aplicaron el taller sube consistentemente, se podra establecer una relacion mas clara entre la formacion y los resultados productivos.
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#1A1A2E;margin-bottom:10px">Acciones recomendadas para Talento Humano</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="display:flex;gap:8px;align-items:flex-start;background:#F4F6FB;border-radius:8px;padding:10px 12px">
+          <div style="font-size:14px;flex-shrink:0">1</div>
+          <div style="font-size:11px;color:#1A1A2E;line-height:1.6"><strong>Reconocer publicamente</strong> a Paola Cano (96,2%) y Ana Karina Orozco (+37,1 pp). Analizar con ellas que hicieron diferente para replicarlo en el grupo.</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;background:#F4F6FB;border-radius:8px;padding:10px 12px">
+          <div style="font-size:14px;flex-shrink:0">2</div>
+          <div style="font-size:11px;color:#1A1A2E;line-height:1.6"><strong>Visita prioritaria</strong> a Viviana Lara y Nicoley Velez. Entender las condiciones de su linea y turno en S20. Descartar factores externos antes de asociar la caida al liderazgo.</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;background:#F4F6FB;border-radius:8px;padding:10px 12px">
+          <div style="font-size:14px;flex-shrink:0">3</div>
+          <div style="font-size:11px;color:#1A1A2E;line-height:1.6"><strong>Plan de mejora individual</strong> para las 8 lideres con OEE critico (menos del 50%). Foco en reduccion de tiempos muertos y seguimiento de meta intra-turno.</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;background:#F4F6FB;border-radius:8px;padding:10px 12px">
+          <div style="font-size:14px;flex-shrink:0">4</div>
+          <div style="font-size:11px;color:#1A1A2E;line-height:1.6"><strong>Seguimiento en S21 y S22</strong> con el mismo dashboard para validar si la tendencia de disponibilidad se consolida y si el rendimiento se recupera con el avance del programa de lideres.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ftr">Talento Humano · Centro Productivo Bianchi · 2026 · Datos actualizados semana 20</div>
+</div>
+
+<script>
+const D=[
+  {n:"Leidy Tatiana Gomez Lopez",       o19:65.2,d19:65.4,r19:99.7,c19:100, o20:77.4,d20:82.1,r20:94.4,c20:100},
+  {n:"Sleidy Alexandra Sarmiento",       o19:34.9,d19:39.1,r19:89.5,c19:100, o20:62.2,d20:60.8,r20:102.4,c20:100},
+  {n:"Arleidys Mariana Morales Salazar", o19:39.9,d19:50.3,r19:73.2,c19:100, o20:42.9,d20:68.4,r20:62.7,c20:100},
+  {n:"Sindy Mariana Grueso Cardenas",    o19:40.6,d19:58.4,r19:69.6,c19:100, o20:55.3,d20:59.1,r20:93.6,c20:100},
+  {n:"Clara Ines Lopez Valencia",        o19:58.3,d19:65.9,r19:88.4,c19:100, o20:51.4,d20:59.3,r20:86.7,c20:100},
+  {n:"Mayerly Constanza Gonzalez",       o19:39.4,d19:65.2,r19:60.4,c19:100, o20:34.9,d20:67.4,r20:51.9,c20:100},
+  {n:"Sandra Milena Gonzalez",           o19:55.5,d19:69.1,r19:80.3,c19:100, o20:50.4,d20:67.4,r20:74.7,c20:100},
+  {n:"Nicoley Andrea Velez Parra",       o19:75.1,d19:66.0,r19:113.8,c19:100,o20:47.2,d20:55.4,r20:85.1,c20:100},
+  {n:"Ana Karina Orozco Quiceno",        o19:34.5,d19:60.1,r19:57.4,c19:100, o20:71.6,d20:70.0,r20:102.3,c20:100},
+  {n:"Maria Alejandra Ramirez Tapasco",  o19:null,d19:null,r19:null,c19:null, o20:42.5,d20:78.6,r20:54.0,c20:100},
+  {n:"Andrea Lopez Rincon",              o19:42.3,d19:55.8,r19:75.9,c19:100, o20:44.6,d20:57.3,r20:77.7,c20:100},
+  {n:"Estefania Restrepo Quiceno",       o19:61.1,d19:82.2,r19:74.3,c19:100, o20:43.7,d20:88.7,r20:49.2,c20:100},
+  {n:"Wendy Dahiana Garcia Ortiz",       o19:67.5,d19:72.6,r19:93.0,c19:100, o20:59.6,d20:70.9,r20:84.0,c20:100},
+  {n:"Paula Marcela Lopez",              o19:50.3,d19:83.6,r19:60.1,c19:100, o20:52.1,d20:83.8,r20:62.2,c20:100},
+  {n:"Paola Andrea Cano Montoya",        o19:76.3,d19:67.1,r19:106.2,c19:100,o20:96.2,d20:76.5,r20:null,c20:100},
+  {n:"Viviana Andrea Lara Hernandez",    o19:81.1,d19:68.5,r19:119.9,c19:100,o20:50.2,d20:70.3,r20:71.4,c20:100},
+  {n:"Luisa Fernanda Lopez Peralta",     o19:66.1,d19:70.3,r19:94.1,c19:100, o20:72.4,d20:75.3,r20:96.1,c20:100},
+  {n:"Alba Lucia Burbano Barrero",       o19:39.7,d19:62.8,r19:63.2,c19:100, o20:40.1,d20:65.7,r20:61.7,c20:100},
+  {n:"Anjie Liseth Aguirre Giraldo",     o19:null,d19:null,r19:null,c19:null, o20:35.0,d20:69.4,r20:50.4,c20:100},
+];
+
+function sc(v){return v===null?"":v>=65?"p-g":v>=50?"p-a":"p-r"}
+function pV(v,np){
+  if(v===null)return np?'<span class="np">No programada</span>':'<span style="color:#bbb;font-size:10px">—</span>';
+  return`<span class="pill ${sc(v)}">${v.toFixed(1)}%</span>`;
+}
+function sV(v,np){
+  if(v===null)return np?'<span class="np">—</span>':'<span style="color:#bbb;font-size:10px">—</span>';
+  return`<span style="font-size:11.5px">${v.toFixed(1)}%</span>`;
+}
+function tend(a,b,np19,np20){
+  if(np19||np20||a===null||b===null)return'<span style="color:#bbb;font-size:10px">—</span>';
+  const d=b-a;
+  if(d>1)return`<span class="tend-up">▲ +${d.toFixed(1)}</span>`;
+  if(d<-1)return`<span class="tend-dn">▼ ${d.toFixed(1)}</span>`;
+  return`<span class="tend-eq">≈ ${d.toFixed(1)}</span>`;
+}
+function badge(d,np20){
+  if(np20)return'<span class="pill p-gr">No programada</span>';
+  if(d.o20>=65)return'<span class="pill p-g">En meta</span>';
+  if(d.o20>=50)return'<span class="pill p-a">Atención</span>';
+  return'<span class="pill p-r">Crítico</span>';
+}
+
+const tb=document.getElementById("tbody");
+D.forEach(d=>{
+  const np19=d.o19===null, np20=false;
+  const tr=document.createElement("tr");
+  tr.innerHTML=`<td class="lname">${d.n}</td><td>${pV(d.o19,np19)}</td><td>${pV(d.o20,np20)}</td><td>${tend(d.o19,d.o20,np19,np20)}</td><td>${sV(d.d19,np19)}</td><td>${sV(d.d20,np20)}</td><td>${sV(d.r19,np19)}</td><td>${sV(d.r20,np20)}</td><td>${sV(d.c19,np19)}</td><td>${sV(d.c20,np20)}</td><td>${badge(d,np20)}</td>`;
+  tb.appendChild(tr);
+});
+
+const rankDiv=document.getElementById("ranking");
+const s20=D.filter(d=>d.o20!==null).sort((a,b)=>b.o20-a.o20);
+s20.forEach((d,i)=>{
+  const nc=i===0?"rn1":i===1?"rn2":i===2?"rn3":"rnn";
+  const oc=d.o20>=65?"ro-g":d.o20>=50?"ro-a":"ro-r";
+  const pct=Math.min(100,d.o20);
+  const bc=d.o20>=65?"#43A047":d.o20>=50?"#FB8C00":"#E53935";
+  const div=document.createElement("div");
+  div.className="ri";
+  div.innerHTML=`<div class="rnum ${nc}">${i+1}</div><div style="flex:1"><div class="rname">${d.n.split(' ').slice(0,2).join(' ')}</div><div class="rbar" style="width:${pct}%;background:${bc}"></div></div><div class="roee ${oc}">${d.o20.toFixed(1)}%</div>`;
+  rankDiv.appendChild(div);
+});
+
+const alDiv=document.getElementById("alertas");
+const mejoras=D.filter(d=>d.o19&&d.o20&&(d.o20-d.o19)>15).sort((a,b)=>(b.o20-b.o19)-(a.o20-a.o19));
+const caidas=D.filter(d=>d.o19&&d.o20&&(d.o19-d.o20)>15).sort((a,b)=>(b.o19-b.o20)-(a.o19-a.o20));
+const criticas=D.filter(d=>d.o20<50).sort((a,b)=>a.o20-b.o20);
+
+mejoras.forEach(d=>{
+  const div=document.createElement("div");
+  div.className="ai ai-g";
+  div.innerHTML=`<div class="at">✅ Mejora destacada — ${d.n.split(' ').slice(0,2).join(' ')}</div><div class="ax">+${(d.o20-d.o19).toFixed(1)} pp · S19: ${d.o19.toFixed(1)}% → S20: ${d.o20.toFixed(1)}% · Caso a reconocer y replicar</div>`;
+  alDiv.appendChild(div);
+});
+caidas.forEach(d=>{
+  const div=document.createElement("div");
+  div.className="ai ai-a";
+  div.innerHTML=`<div class="at">⚠️ Caída significativa — ${d.n.split(' ').slice(0,2).join(' ')}</div><div class="ax">−${(d.o19-d.o20).toFixed(1)} pp · S19: ${d.o19.toFixed(1)}% → S20: ${d.o20.toFixed(1)}% · Requiere seguimiento urgente</div>`;
+  alDiv.appendChild(div);
+});
+const yaAlertadas=new Set([...mejoras,...caidas].map(d=>d.n));
+criticas.filter(d=>!yaAlertadas.has(d.n)).forEach(d=>{
+  const div=document.createElement("div");
+  div.className="ai ai-r";
+  div.innerHTML=`<div class="at">🔴 OEE crítico — ${d.n.split(' ').slice(0,2).join(' ')}</div><div class="ax">OEE S20: ${d.o20.toFixed(1)}% · Disp: ${d.d20.toFixed(1)}% · Rend: ${d.r20!==null?d.r20.toFixed(1)+'%':'N/D'} · Plan de mejora requerido</div>`;
+  alDiv.appendChild(div);
+});
+
+const cDiv=document.getElementById("conclusiones");
+const concls=[
+  {cl:"ci-r",ic:"📉",t:"<strong>Sin mejora grupal:</strong> el OEE promedio bajó −0,4 pp (54,6% → 54,2%). Las caídas de líderes que venían con OEE alto (Viviana Lara −30,9 pp, Nicoley Vélez −27,9 pp) compensaron las ganancias del grupo y evitaron una mejora neta."},
+  {cl:"ci-g",ic:"✅",t:"<strong>La calidad sigue siendo la fortaleza absoluta:</strong> 100% en todas las líderes, en ambas semanas. Refleja disciplina operativa y control de proceso sostenido independiente de las otras variables."},
+  {cl:"ci-a",ic:"📈",t:"<strong>Disponibilidad mejoró +5,0 pp</strong> (64,8% → 69,8%), siendo el único indicador positivo del grupo. Esto puede relacionarse con mejor organización del inicio de turno — hábito trabajado en el taller de orientación a resultados."},
+  {cl:"ci-r",ic:"⚠️",t:"<strong>Rendimiento es la categoría más crítica:</strong> cayó −7,9 pp (83,5% → 75,6%). Esta variable responde más a factores de línea, maquinaria y dotación que al liderazgo directo, por lo que requiere análisis operativo adicional."},
+  {cl:"ci-g",ic:"🏆",t:"<strong>Paola Cano alcanzó el OEE más alto del grupo:</strong> 96,2% en S20, superando ampliamente la meta. Ana Karina Orozco también superó la meta con 71,6% (venía de 34,5% en S19). Son casos a reconocer y analizar para replicar."},
+  {cl:"ci-r",ic:"🔴",t:"<strong>Caídas más preocupantes:</strong> Viviana Lara (81,1% → 50,2%) y Nicoley Vélez (75,1% → 47,2%) pasaron de ser referentes a estar por debajo de la meta. Se recomienda revisar las condiciones de su línea y turno en S20."},
+  {cl:"ci-a",ic:"📋",t:"<strong>8 líderes en OEE crítico (&lt;50%) en S20:</strong> el grupo más vulnerable requiere plan de mejora individual con foco en disponibilidad (reducir tiempos muertos) y rendimiento (velocidad operativa sostenida)."},
+  {cl:"ci-b",ic:"💡",t:"<strong>Lectura del taller de orientación a resultados:</strong> es temprano para atribuir resultados al taller (1 semana). La disponibilidad mejoró, lo que es señal positiva. Se recomienda continuar el seguimiento en S21 y S22 para ver tendencia real."},
+];
+concls.forEach(c=>{
+  const div=document.createElement("div");
+  div.className=`ci ${c.cl}`;
+  div.innerHTML=`<div class="cicon">${c.ic}</div><div class="ctext">${c.t}</div>`;
+  cDiv.appendChild(div);
+});
+</script>
+</body>
+</html>
